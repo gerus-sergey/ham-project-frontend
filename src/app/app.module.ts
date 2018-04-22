@@ -1,10 +1,11 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import {RegistrationComponent} from './registration/registration.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {LocalStorageModule} from "angular-2-local-storage";
 
 
 
@@ -17,7 +18,13 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
   imports: [
     BrowserModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule,
+    LocalStorageModule.withConfig({
+      prefix: 'app-root',
+      //  storageType: 'localStorage'
+      storageType: 'sessionStorage'
+    })
   ],
   providers: [],
   bootstrap: [AppComponent]
