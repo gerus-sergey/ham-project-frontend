@@ -19,9 +19,17 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "app",
       "styles": [
-        "styles.css"
+        "styles.css",
+        "css/component.css",
+        "css/demo.css",
+        "css/normalize.css",
+        "css/fontawesome-all.css"
       ],
-      "scripts": [],
+      "scripts": [
+        "js/gnmenu.js",
+        "js/classie.js",
+        "js/modernizr.custom.js"
+      ],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",

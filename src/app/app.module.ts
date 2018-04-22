@@ -6,14 +6,22 @@ import { AppComponent } from './app.component';
 import {RegistrationComponent} from './registration/registration.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {LocalStorageModule} from "angular-2-local-storage";
+import { SidebarComponent } from './sidebar/sidebar.component';
+import {RouterModule, Routes} from "@angular/router";
 
-
+const appRoutes: Routes =[
+//  { path: '', component: HomeComponent},
+  { path: 'registered', component: RegistrationComponent},
+  // { path: 'login', component: SignInComponent},
+  // { path: '**', component: NotFoundComponent },
+];
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    SidebarComponent
   ],
   imports: [
     BrowserModule,
@@ -24,7 +32,8 @@ import {LocalStorageModule} from "angular-2-local-storage";
       prefix: 'app-root',
       //  storageType: 'localStorage'
       storageType: 'sessionStorage'
-    })
+    }),
+    RouterModule.forRoot(appRoutes, {useHash: true})
   ],
   providers: [],
   bootstrap: [AppComponent]
