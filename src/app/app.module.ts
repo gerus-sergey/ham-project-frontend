@@ -8,11 +8,12 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {LocalStorageModule} from "angular-2-local-storage";
 import { SidebarComponent } from './sidebar/sidebar.component';
 import {RouterModule, Routes} from "@angular/router";
+import { AuthorizationComponent } from './authorization/authorization.component';
 
 const appRoutes: Routes =[
 //  { path: '', component: HomeComponent},
   { path: 'registered', component: RegistrationComponent},
-  // { path: 'login', component: SignInComponent},
+  { path: 'login', component: AuthorizationComponent},
   // { path: '**', component: NotFoundComponent },
 ];
 
@@ -21,7 +22,8 @@ const appRoutes: Routes =[
   declarations: [
     AppComponent,
     RegistrationComponent,
-    SidebarComponent
+    SidebarComponent,
+    AuthorizationComponent
   ],
   imports: [
     BrowserModule,
