@@ -9,11 +9,14 @@ import {LocalStorageModule} from "angular-2-local-storage";
 import { SidebarComponent } from './sidebar/sidebar.component';
 import {RouterModule, Routes} from "@angular/router";
 import { AuthorizationComponent } from './authorization/authorization.component';
+import { ProfileComponent } from './profile/profile.component';
+
 
 const appRoutes: Routes =[
 //  { path: '', component: HomeComponent},
   { path: 'registered', component: RegistrationComponent},
   { path: 'login', component: AuthorizationComponent},
+  { path: 'account', component: ProfileComponent}
   // { path: '**', component: NotFoundComponent },
 ];
 
@@ -23,7 +26,8 @@ const appRoutes: Routes =[
     AppComponent,
     RegistrationComponent,
     SidebarComponent,
-    AuthorizationComponent
+    AuthorizationComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

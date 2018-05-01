@@ -39,7 +39,7 @@ export class AuthorizationComponent implements OnInit {
           (data: UserRegistered) => {
             this.done = true;
             this.receivedUser = data;
-            // this.route.navigateByUrl("/account/" + this.receivedUser.id + "/profile/account");
+            this.route.navigateByUrl("/account");
             localStorage.setItem('id', this.receivedUser.id.toString());
             console.log(localStorage.getItem('id'));
           },

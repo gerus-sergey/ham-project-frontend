@@ -1,0 +1,83 @@
+<div class="container">
+  <div class="row">
+    <div class="profile-menu col-md-3">
+      <div class="sidebar-img">
+        <label for="userAvatar" class="user-avatar">
+          <img src="assets/img/user.png" class="img-circle image">
+          <span>Click here to upload</span>
+        </label>
+        <h3 class="text-center" *ngIf="userProfile">{{userProfile.lastName}} {{userProfile.firstName}}</h3>
+      </div>
+      <div class="sidebar-profile">
+        <form style="visibility: hidden">
+          <input type="file" id="userAvatar">
+        </form>
+      </div>
+    </div>
+
+    <div class="profile-info col-md-9">
+      <div class="container-fluid">
+        <form class="form-horizontal" *ngIf="userProfile" #f="ngForm" novalidate
+              (ngSubmit)="updateUser(f.value, f.valid)">
+          <div class="form-group">
+            <h4 class=" profile-label">Фамилия</h4>
+            <div class="input-group profile-input">
+              <input type="text" #lastname="ngModel" disabled class="form-control" name="lastName"
+                     [(ngModel)]="userProfile.lastName" minlength="2" maxlength="8" required>
+              <div class="input-group-btn profile-input-button">
+                <button class="btn btn-default profile-button-edit" type="button"
+                        onclick="this.form.lastName.disabled = 0"><i class="fas fa-pencil-alt fa-lg icon-edit"
+                                                                     aria-hidden="true"></i></button>
+              </div>
+
+            </div><!-- /input-group -->
+          </div>
+
+          <div class="form-group">
+            <h4 class=" profile-label">Имя</h4>
+            <div class="input-group profile-input">
+              <input type="text" minlength="2" maxlength="20" disabled required class="form-control" name="firstName"
+                     [(ngModel)]="userProfile.firstName">
+              <div class="input-group-btn profile-input-button">
+                <button class="btn btn-default profile-button-edit" type="button"
+                        onclick="this.form.firstName.disabled = 0"><i class="fas fa-pencil-alt fa-lg icon-edit"
+                                                                      aria-hidden="true"></i></button>
+              </div>
+            </div><!-- /input-group -->
+          </div>
+
+          <div class="form-group">
+            <h4 class=" profile-label">Отчество</h4>
+            <div class="input-group profile-input">
+              <input type="text" minlength="2" maxlength="20" disabled required class="form-control" name="patronymic"
+                     [(ngModel)]="userProfile.patronymic">
+              <div class="input-group-btn profile-input-button">
+                <button class="btn btn-default profile-button-edit" type="button"
+                        onclick="this.form.patronymic.disabled = 0">
+                  <i class="fas fa-pencil-alt fa-lg icon-edit" aria-hidden="true"></i></button>
+              </div>
+            </div><!-- /input-group -->
+          </div>
+
+          <div class="form-group">
+            <h4 class=" profile-label">Должность</h4>
+            <div class="input-group profile-input">
+              <input type="text" minlength="2" maxlength="20" disabled required class="form-control" name="position"
+                     [(ngModel)]="userProfile.position">
+              <div class="input-group-btn profile-input-button">
+                <button class="btn btn-default profile-button-edit" type="button"
+                        onclick="this.form.position.disabled = 0">
+                  <i class="fas fa-pencil-alt fa-lg icon-edit" aria-hidden="true"></i></button>
+              </div>
+            </div><!-- /input-group -->
+          </div>
+
+          <div class="form-group" style="padding-top: 10px">
+            <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>

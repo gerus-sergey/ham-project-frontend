@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {UserRegistered} from "../models/user-registered.interface";
 import {HttpService} from "../services/http.service";
 import {LocalStorageService} from "angular-2-local-storage";
+import {Router} from "@angular/router";
 
 export class Form {
   id: number;
@@ -25,7 +26,9 @@ export class RegistrationComponent implements OnInit {
   freeEmail: boolean = true;
   remember: boolean = false;
 
-  constructor(private httpService: HttpService, private localStorageService: LocalStorageService) {
+  constructor(private httpService: HttpService,
+              private localStorageService: LocalStorageService,
+              private route: Router) {
   }
 
   ngOnInit() {
@@ -53,20 +56,21 @@ export class RegistrationComponent implements OnInit {
   registeredUser(model: Form, isValid: boolean) {
     if (isValid) {
       this.userRegistered = new UserRegistered(null, model.firstName, model.lastName, model.email, model.password);
-      this.httpService.registeredUser(this.userRegistered)
+      this.httpService.addOrUpdateUser(this.userRegistered)
         .subscribe(
-          (data: UserRegistered) => {
-            this.receivedUser = data;
-            console.log(this.receivedUser);
-            if (this.remember) {
-              localStorage.setItem('id', this.receivedUser.id.toString());
-              console.log(localStorage.getItem("id"));
-            } else {
-              localStorage.setItem('id', null);
-            }
-          },
-          error => console.log(error)
-        );
+        (data: UserRegistered) => {
+          this.receivedUser = data;
+          console.log(this.receivedUser);
+          this.route.navigateByUrl("/account");
+          if (this.remember) {
+            localStorage.setItem('id', this.receivedUser.id.toString());
+            console.log(localStorage.getItem("id"));
+          } else {
+            localStorage.setItem('id', null);
+          }
+        },
+        error => console.log(error)
+      );
     }
   }
 

@@ -10,7 +10,7 @@ export class HttpService {
 
   url: String = "http://localhost:8080";
 
-  registeredUser(user: UserRegistered) {
+  addOrUpdateUser(user: UserRegistered) {
     const headers = new HttpHeaders().set('Content-Type', 'application/json;charset=utf-8');
     return this.http.post(this.url + '/experts', user, {
       headers: headers
@@ -26,5 +26,9 @@ export class HttpService {
     return this.http.post(this.url + '/experts/login', user, {
       headers: headers
     });
+  }
+
+  getExpert(id: String) {
+    return this.http.get(this.url + "/experts/" + id)
   }
 }
