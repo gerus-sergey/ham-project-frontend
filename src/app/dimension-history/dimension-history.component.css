@@ -1,0 +1,10 @@
+.container {
+  background-color: white;
+  margin-top: 80px;
+  width: 90%;
+  margin-bottom: 20px;
+  z-index: 10;
+  border-radius: 0.5rem;
+  height: 100%;
+  padding: 20px 40px 40px 40px;
+}

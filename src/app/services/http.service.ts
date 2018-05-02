@@ -28,7 +28,19 @@ export class HttpService {
     });
   }
 
-  getExpert(id: String) {
-    return this.http.get(this.url + "/experts/" + id)
+  getExpert(expertId: String) {
+    return this.http.get(this.url + "/experts/" + expertId)
+  }
+
+  getDimensions(expertId: String){
+    return this.http.get(this.url + "/dimensions/expert/" + expertId)
+  }
+
+  getRatingAlternativesByDimension(dimensionId: String){
+    return this.http.get(this.url + "/rating-alternatives/dimension/" + dimensionId)
+  }
+
+  getRatingCriterionsByDimension(dimensionId: String){
+    return this.http.get(this.url + "/rating-criterions/dimension/" + dimensionId)
   }
 }

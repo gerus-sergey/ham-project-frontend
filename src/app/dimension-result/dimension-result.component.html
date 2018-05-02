@@ -1,0 +1,25 @@
+<div class="container">
+  <div class="row">
+    <div class="panel panel-default">
+      <div class="panel-heading">Окончательный рейтинг</div>
+      <table class="table table-hover">
+        <tr>
+          <th>Наименование критерия</th>
+          <th>Рейтинг</th>
+        </tr>
+        <tr *ngFor="let ratingCriterion of (ratingCriterions | slice:ratingCriterions.length - ratingCriterions.length)">
+          <td>{{ratingCriterion?.criterion.criterionName}}</td>
+          <td>{{ratingCriterion?.rating | percent}}</td>
+        </tr>
+        <tr>
+          <th>Наименование альтернативы</th>
+          <th>Рейтинг</th>
+        </tr>
+        <tr *ngFor="let ratingAlternative of (ratingAlternatives | slice:ratingAlternatives.length - ratingAlternatives.length)">
+          <td>{{ratingAlternative?.alternative.alternativeName}}</td>
+          <td>{{ratingAlternative?.rating | percent}}</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>

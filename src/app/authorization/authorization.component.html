@@ -4,7 +4,7 @@
       <div class="form-group">
         <input class="form-control form-input" name="email" type="email" placeholder="Email"
                required [(ngModel)]="authorizationUser.email" #email="ngModel"
-               pattern="^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$"/>
+               pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"/>
         <small [hidden]="email.valid || (email.pristine && !f.submitted)">
           Email должен соответствовать формату <i>john@doe.com</i>.
         </small>

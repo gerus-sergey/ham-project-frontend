@@ -10,13 +10,17 @@ import { SidebarComponent } from './sidebar/sidebar.component';
 import {RouterModule, Routes} from "@angular/router";
 import { AuthorizationComponent } from './authorization/authorization.component';
 import { ProfileComponent } from './profile/profile.component';
+import { DimensionResultComponent } from './dimension-result/dimension-result.component';
+import { DimensionHistoryComponent } from './dimension-history/dimension-history.component';
 
 
 const appRoutes: Routes =[
 //  { path: '', component: HomeComponent},
   { path: 'registered', component: RegistrationComponent},
   { path: 'login', component: AuthorizationComponent},
-  { path: 'account', component: ProfileComponent}
+  { path: 'account', component: ProfileComponent},
+  { path: 'history', component: DimensionHistoryComponent},
+  { path: 'dimension-result/:id', component: DimensionResultComponent},
   // { path: '**', component: NotFoundComponent },
 ];
 
@@ -27,7 +31,9 @@ const appRoutes: Routes =[
     RegistrationComponent,
     SidebarComponent,
     AuthorizationComponent,
-    ProfileComponent
+    ProfileComponent,
+    DimensionResultComponent,
+    DimensionHistoryComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,19 @@
+<div class="container">
+  <div class="row">
+    <div class="panel panel-default">
+      <div class="panel-heading">История оценок</div>
+      <table class="table table-hover">
+        <tr>
+          <td>Наименование</td>
+          <td>Дата оценки</td>
+          <td>Комментарий</td>
+        </tr>
+        <tr *ngFor="let dimension of (dimensions | slice:dimensions.length - dimensions.length)">
+          <td><a routerLink="/dimension-result/{{dimension?.id}}">Name</a></td>
+          <td>{{dimension?.date | date:"dd.MM.yyyy"}}</td>
+          <td>Comment</td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
