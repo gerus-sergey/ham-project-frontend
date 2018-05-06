@@ -12,6 +12,10 @@ import { AuthorizationComponent } from './authorization/authorization.component'
 import { ProfileComponent } from './profile/profile.component';
 import { DimensionResultComponent } from './dimension-result/dimension-result.component';
 import { DimensionHistoryComponent } from './dimension-history/dimension-history.component';
+import { DimensionStartComponent } from './dimension-start/dimension-start.component';
+import {DimensionService} from "./services/dimension.service";
+import {CheckBoxList} from "ng2-checkboxlist/checkboxlist";
+import { DimensionCriterionsComponent } from './dimension-criterions/dimension-criterions.component';
 
 
 const appRoutes: Routes =[
@@ -21,6 +25,7 @@ const appRoutes: Routes =[
   { path: 'account', component: ProfileComponent},
   { path: 'history', component: DimensionHistoryComponent},
   { path: 'dimension-result/:id', component: DimensionResultComponent},
+  { path: 'dimension-start', component: DimensionStartComponent},
   // { path: '**', component: NotFoundComponent },
 ];
 
@@ -33,7 +38,10 @@ const appRoutes: Routes =[
     AuthorizationComponent,
     ProfileComponent,
     DimensionResultComponent,
-    DimensionHistoryComponent
+    DimensionHistoryComponent,
+    DimensionStartComponent,
+    CheckBoxList,
+    DimensionCriterionsComponent
   ],
   imports: [
     BrowserModule,
@@ -47,7 +55,7 @@ const appRoutes: Routes =[
     }),
     RouterModule.forRoot(appRoutes, {useHash: true})
   ],
-  providers: [],
+  providers: [DimensionService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -23,12 +23,16 @@
         "css/component.css",
         "css/demo.css",
         "css/normalize.css",
-        "css/fontawesome-all.css"
+        "css/fontawesome-all.css",
+        "css/bootstrap.css",
+        "css/bootstrap-theme.css"
       ],
       "scripts": [
+        "js/jquery-3.3.1.min.js",
         "js/gnmenu.js",
         "js/classie.js",
-        "js/modernizr.custom.js"
+        "js/modernizr.custom.js",
+        "js/bootstrap.js"
       ],
       "environmentSource": "environments/environment.ts",
       "environments": {
