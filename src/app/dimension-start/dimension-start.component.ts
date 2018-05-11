@@ -4,6 +4,7 @@ import {HttpService} from "../services/http.service";
 import {Criterion} from "../models/criterion.interface";
 import {Alternative} from "../models/alternative.interface";
 import {DimensionService} from "../services/dimension.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-dimension-start',
@@ -23,7 +24,9 @@ export class DimensionStartComponent implements OnInit {
   newAlternative: Alternative;
   alternativesResult: Alternative[] = []
 
-  constructor(private httpService: HttpService, private dimensionService: DimensionService) {
+  constructor(private httpService: HttpService,
+              private dimensionService: DimensionService,
+              private route: Router) {
   }
 
   ngOnInit() {
@@ -31,7 +34,7 @@ export class DimensionStartComponent implements OnInit {
     this.dimension = {
       id: '',
       expertId: '',
-      date: '',
+      date: new Date(),
       name: '',
       comment: ''
     };
@@ -40,13 +43,13 @@ export class DimensionStartComponent implements OnInit {
       id: '',
       criterionName: '',
       description: '',
-      expertId:''
+      expertId: ''
     };
 
     this.newAlternative = {
       id: '',
       alternativeName: '',
-      expertId:''
+      expertId: ''
     };
 
     this.httpService.getAlternativesByExpertId(this.id)
@@ -77,9 +80,21 @@ export class DimensionStartComponent implements OnInit {
   }
 
   addDimension(model: Dimension, isValid: boolean) {
-    console.log(model);
-    for(let i in this.criterionsResult){
-      if(this.criterionsResult[i].id == null){
+
+    this.dimension = new Dimension("", this.id.toString(), new Date(), model.name, model.comment);
+
+    this.httpService.addDimension(this.dimension)
+      .subscribe(
+        (data: Dimension) => {
+          this.dimensionService.addDimension(data);
+        },
+        error => {
+          console.log(error);
+        }
+      );
+
+    for (let i in this.criterionsResult) {
+      if (this.criterionsResult[i].id == null) {
         this.httpService.addCriterion(this.criterionsResult[i])
           .subscribe(
             (data: Criterion) => {
@@ -92,11 +107,11 @@ export class DimensionStartComponent implements OnInit {
       }
     }
 
-    for(let j in this.alternativesResult){
-      if(this.alternativesResult[j].id == null){
+    for (let j in this.alternativesResult) {
+      if (this.alternativesResult[j].id == null) {
         this.httpService.addAlternative(this.alternativesResult[j])
           .subscribe(
-            (data: Criterion) => {
+            (data: Alternative) => {
               this.alternativesResult[j].id = data.id;
             },
             error => {
@@ -108,6 +123,7 @@ export class DimensionStartComponent implements OnInit {
 
     this.dimensionService.addCriterions(this.criterionsResult);
     this.dimensionService.addAlternatives(this.alternativesResult);
+    this.route.navigateByUrl("/dimension-criterion");
   }
 
   addCriterionFromDB(element: HTMLInputElement): void {

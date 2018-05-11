@@ -16,16 +16,18 @@ import { DimensionStartComponent } from './dimension-start/dimension-start.compo
 import {DimensionService} from "./services/dimension.service";
 import {CheckBoxList} from "ng2-checkboxlist/checkboxlist";
 import { DimensionCriterionsComponent } from './dimension-criterions/dimension-criterions.component';
+import { HomePageComponent } from './home-page/home-page.component';
 
 
 const appRoutes: Routes =[
-//  { path: '', component: HomeComponent},
+  { path: '', component: HomePageComponent},
   { path: 'registered', component: RegistrationComponent},
   { path: 'login', component: AuthorizationComponent},
   { path: 'account', component: ProfileComponent},
   { path: 'history', component: DimensionHistoryComponent},
   { path: 'dimension-result/:id', component: DimensionResultComponent},
   { path: 'dimension-start', component: DimensionStartComponent},
+  { path: 'dimension-criterion', component: DimensionCriterionsComponent}
   // { path: '**', component: NotFoundComponent },
 ];
 
@@ -41,7 +43,8 @@ const appRoutes: Routes =[
     DimensionHistoryComponent,
     DimensionStartComponent,
     CheckBoxList,
-    DimensionCriterionsComponent
+    DimensionCriterionsComponent,
+    HomePageComponent
   ],
   imports: [
     BrowserModule,

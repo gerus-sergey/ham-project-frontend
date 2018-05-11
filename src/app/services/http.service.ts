@@ -4,6 +4,8 @@ import {UserRegistered} from "../models/user-registered.interface";
 import {UserSignIn} from "../authorization/authorization.component";
 import {Criterion} from "../models/criterion.interface";
 import {Alternative} from "../models/alternative.interface";
+import {Dimension} from "../models/dimension.interface";
+import {CriterionDimension} from "../models/criterion-dimension.interface";
 
 @Injectable()
 export class HttpService {
@@ -64,6 +66,20 @@ export class HttpService {
   addAlternative(alternative: Alternative){
     const headers = new HttpHeaders().set('Content-Type', 'application/json;charset=utf-8');
     return this.http.post(this.url + '/alternatives', alternative, {
+      headers: headers
+    });
+  }
+
+  addDimension(dimension: Dimension){
+    const headers = new HttpHeaders().set('Content-Type', 'application/json;charset=utf-8');
+    return this.http.post(this.url + '/dimensions', dimension, {
+      headers: headers
+    });
+  }
+
+  addDimensionCriterions(dimensionId: String, dimensionCriterions: CriterionDimension[]){
+    const headers = new HttpHeaders().set('Content-Type', 'application/json;charset=utf-8');
+    return this.http.post(this.url + '/rating-criterions/' + dimensionId, dimensionCriterions ,{
       headers: headers
     });
   }

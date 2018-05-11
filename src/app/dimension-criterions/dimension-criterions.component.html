@@ -1,0 +1,116 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+
+      <div class="page-header">
+        <h2>Оценка критериев</h2>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <h4 style="margin-top:0">Критерий 1</h4>
+          <textarea class="form-control" style="resize: none;" [(ngModel)]="firstCriterion.criterionName" readonly
+                    rows="3" cols="30"></textarea>
+        </div>
+
+        <div class="col-md-6">
+          <h4 style="margin-top: 0">Критерий 2</h4>
+          <textarea class="form-control" style="resize: none; " [(ngModel)]="secondCriterion.criterionName" readonly
+                    rows="3" cols="30"></textarea>
+        </div>
+      </div>
+
+
+      <h4>Оцените с помощью шкалы важность критерия 1 относительно критерия 2?</h4>
+
+      <div class="row">
+        <div class="col-md-1">
+
+          <div class="radio name-radio">
+            <h4>-8</h4>
+            <label>
+              <input #r1 type="radio" name="r" (change)="logRadio(r1)" value="0.11">
+            </label>
+          </div>
+        </div>
+        <div class="col-md-1">
+          <div class="radio name-radio">
+            <h4>-6</h4>
+            <label>
+              <input #r2 type="radio" name="r" (change)="logRadio(r2)" value="0.33">
+            </label>
+          </div>
+        </div>
+        <div class="col-md-1">
+          <div class="radio name-radio">
+            <h4>-4</h4>
+            <label>
+              <input #r3 type="radio" name="r" (change)="logRadio(r3)" value="0.55">
+            </label>
+          </div>
+        </div>
+        <div class="col-md-1">
+          <div class="radio name-radio">
+            <h4>-2</h4>
+            <label>
+              <input #r4 type="radio" name="r" (change)="logRadio(r4)" value="0.77">
+            </label>
+          </div>
+        </div>
+        <div class="col-md-1">
+          <div class="radio name-radio">
+            <h4>0</h4>
+            <label>
+              <input #r5 type="radio" name="r" (change)="logRadio(r5)" value="1" checked>
+            </label>
+          </div>
+        </div>
+        <div class="col-md-1">
+          <div class="radio name-radio">
+            <h4>2</h4>
+            <label>
+              <input #r6 type="radio" name="r" (change)="logRadio(r6)" value="1.285">
+            </label>
+          </div>
+        </div>
+        <div class="col-md-1">
+          <div class="radio name-radio">
+            <h4>4</h4>
+            <label>
+              <input #r7 type="radio" name="r" (change)="logRadio(r7)" value="1.8">
+            </label>
+          </div>
+        </div>
+        <div class="col-md-1">
+          <div class="radio name-radio">
+            <h4>6</h4>
+            <label>
+              <input #r8 type="radio" name="r" (change)="logRadio(r8)" value="3">
+            </label>
+          </div>
+        </div>
+        <div class="col-md-1">
+          <div class="radio name-radio">
+            <h4>8</h4>
+            <label>
+              <input #r9 type="radio" name="r" (change)="logRadio(r9)" value="9">
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-1">
+        <button class="btn btn-primary" (click)="lastCriterion()">Назад</button>
+      </div>
+      <div class="col-md-1">
+        <button class="btn btn-primary" (click)="nextCriterion()">Далее</button>
+      </div>
+      <div class="col-md-1">
+        <button class="btn btn-primary" (click)="dimension()">Оценить критерии</button>
+      </div>
+    </div>
+  </div>
+</div>
+
