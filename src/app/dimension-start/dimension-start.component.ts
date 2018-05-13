@@ -9,8 +9,7 @@ import {Router} from "@angular/router";
 @Component({
   selector: 'app-dimension-start',
   templateUrl: './dimension-start.component.html',
-  styleUrls: ['./dimension-start.component.css'],
-  providers: [HttpService]
+  styleUrls: ['./dimension-start.component.css']
 })
 export class DimensionStartComponent implements OnInit {
   public id: String;
@@ -86,44 +85,15 @@ export class DimensionStartComponent implements OnInit {
     this.httpService.addDimension(this.dimension)
       .subscribe(
         (data: Dimension) => {
-          this.dimensionService.addDimension(data);
+          this.dimensionService.setDimension(data);
+          this.dimensionService.setCriterions(this.criterionsResult);
+          this.dimensionService.setAlternatives(this.alternativesResult);
+          this.route.navigateByUrl("/dimension-criterion");
         },
         error => {
           console.log(error);
         }
       );
-
-    for (let i in this.criterionsResult) {
-      if (this.criterionsResult[i].id == null) {
-        this.httpService.addCriterion(this.criterionsResult[i])
-          .subscribe(
-            (data: Criterion) => {
-              this.criterionsResult[i].id = data.id;
-            },
-            error => {
-              console.log(error);
-            }
-          );
-      }
-    }
-
-    for (let j in this.alternativesResult) {
-      if (this.alternativesResult[j].id == null) {
-        this.httpService.addAlternative(this.alternativesResult[j])
-          .subscribe(
-            (data: Alternative) => {
-              this.alternativesResult[j].id = data.id;
-            },
-            error => {
-              console.log(error);
-            }
-          );
-      }
-    }
-
-    this.dimensionService.addCriterions(this.criterionsResult);
-    this.dimensionService.addAlternatives(this.alternativesResult);
-    this.route.navigateByUrl("/dimension-criterion");
   }
 
   addCriterionFromDB(element: HTMLInputElement): void {
@@ -134,8 +104,15 @@ export class DimensionStartComponent implements OnInit {
   }
 
   addNewCriterion(model: Criterion, isValid: boolean) {
-    this.criterionsResult.push(new Criterion(model.id, model.criterionName, model.description, this.id));
-    console.log(this.criterionsResult);
+    this.httpService.addCriterion(new Criterion(model.id, model.criterionName, model.description, this.id))
+      .subscribe(
+        (data: Criterion) => {
+          this.criterionsResult.push(data);
+        },
+        error => {
+          console.log(error);
+        }
+      );
   }
 
   addAlternativeFromDB(element: HTMLInputElement): void {
@@ -146,8 +123,15 @@ export class DimensionStartComponent implements OnInit {
   }
 
   addNewAlternative(model: Alternative, isValid: boolean) {
-    this.alternativesResult.push(new Alternative(model.id, model.alternativeName, this.id));
-    console.log(model);
+    this.httpService.addAlternative(new Alternative(model.id, model.alternativeName, this.id))
+      .subscribe(
+        (data: Alternative) => {
+          this.alternativesResult.push(data);
+        },
+        error => {
+          console.log(error);
+        }
+      );
   }
 
   deleteCriterion(i: number) {

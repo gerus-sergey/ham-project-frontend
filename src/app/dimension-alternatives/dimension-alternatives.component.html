@@ -3,25 +3,25 @@
     <div class="col-md-12">
 
       <div class="page-header">
-        <h2>Оценка критериев</h2>
+        <h2>Оценка альтернатив</h2>
       </div>
 
       <div class="row">
         <div class="col-md-6">
-          <h4 style="margin-top:0">Критерий 1</h4>
-          <textarea class="form-control" style="resize: none;" [(ngModel)]="firstCriterion.criterionName" readonly
+          <h4 style="margin-top:0">Альтернатива</h4>
+          <textarea class="form-control" style="resize: none;" [(ngModel)]="alternative.alternativeName" readonly
                     rows="3" cols="30"></textarea>
         </div>
 
         <div class="col-md-6">
-          <h4 style="margin-top: 0">Критерий 2</h4>
-          <textarea class="form-control" style="resize: none; " [(ngModel)]="secondCriterion.criterionName" readonly
+          <h4 style="margin-top: 0">Критерий</h4>
+          <textarea class="form-control" style="resize: none; " [(ngModel)]="criterion.criterionName" readonly
                     rows="3" cols="30"></textarea>
         </div>
       </div>
 
 
-      <h4>Оцените с помощью шкалы важность критерия 1 относительно критерия 2?</h4>
+      <h4>Оцените с помощью шкалы важность критерия для альтернативы</h4>
 
       <div class="row">
         <div class="col-md-1">
@@ -102,13 +102,13 @@
 
     <div class="row">
       <div class="col-md-1">
-        <button class="btn btn-primary" (click)="lastCriterion()">Назад</button>
+        <button class="btn btn-primary" (click)="lastAlternative()">Назад</button>
       </div>
       <div class="col-md-1">
-        <button class="btn btn-primary" (click)="nextCriterion()">Далее</button>
+        <button class="btn btn-primary" (click)="nextAlternative()">Далее</button>
       </div>
       <div class="col-md-1">
-        <button class="btn btn-primary" (click)="dimension()" [hidden]="disableDimensionButton">Оценить критерии</button>
+        <button class="btn btn-primary" (click)="dimension()" [hidden]="disableDimensionButton">Оценить альтернативы</button>
       </div>
     </div>
   </div>

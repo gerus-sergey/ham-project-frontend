@@ -32,4 +32,17 @@ export class DimensionHistoryComponent implements OnInit {
       );
   }
 
+  deleteDimension(dimensionId: string, index: number){
+    this.httpService.deleteDimension(dimensionId)
+      .subscribe(
+        (data) => {
+          console.log(data);
+          this.dimensions.splice(index, 1);
+        },
+        error => {
+          console.log(error);
+        }
+      );
+  }
+
 }

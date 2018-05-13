@@ -17,6 +17,9 @@ import {DimensionService} from "./services/dimension.service";
 import {CheckBoxList} from "ng2-checkboxlist/checkboxlist";
 import { DimensionCriterionsComponent } from './dimension-criterions/dimension-criterions.component';
 import { HomePageComponent } from './home-page/home-page.component';
+import {HttpService} from "./services/http.service";
+import { ErrorPageComponent } from './error-page/error-page.component';
+import { DimensionAlternativesComponent } from './dimension-alternatives/dimension-alternatives.component';
 
 
 const appRoutes: Routes =[
@@ -27,8 +30,9 @@ const appRoutes: Routes =[
   { path: 'history', component: DimensionHistoryComponent},
   { path: 'dimension-result/:id', component: DimensionResultComponent},
   { path: 'dimension-start', component: DimensionStartComponent},
-  { path: 'dimension-criterion', component: DimensionCriterionsComponent}
-  // { path: '**', component: NotFoundComponent },
+  { path: 'dimension-criterion', component: DimensionCriterionsComponent},
+  { path: 'dimension-alternative', component: DimensionAlternativesComponent},
+  { path: '**', component: ErrorPageComponent },
 ];
 
 
@@ -44,7 +48,9 @@ const appRoutes: Routes =[
     DimensionStartComponent,
     CheckBoxList,
     DimensionCriterionsComponent,
-    HomePageComponent
+    HomePageComponent,
+    ErrorPageComponent,
+    DimensionAlternativesComponent
   ],
   imports: [
     BrowserModule,
@@ -58,7 +64,7 @@ const appRoutes: Routes =[
     }),
     RouterModule.forRoot(appRoutes, {useHash: true})
   ],
-  providers: [DimensionService],
+  providers: [DimensionService, HttpService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

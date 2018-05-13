@@ -1,17 +1,25 @@
 <div class="container">
   <div class="row">
+
+    <div class="page-header">
+      <h2>История оценок</h2>
+    </div>
+
     <div class="panel panel-default">
-      <div class="panel-heading">История оценок</div>
       <table class="table table-hover">
         <tr>
           <td>Наименование</td>
           <td>Дата оценки</td>
           <td>Комментарий</td>
         </tr>
-        <tr *ngFor="let dimension of (dimensions | slice:dimensions.length - dimensions.length)">
+        <tr *ngFor="let dimension of dimensions; let i = index">
           <td><a routerLink="/dimension-result/{{dimension?.id}}">{{dimension?.name}}</a></td>
           <td>{{dimension?.date | date:"dd.MM.yyyy"}}</td>
           <td>{{dimension?.comment}}</td>
+          <td><button type="button" style="float: right" class="btn btn-danger btn-sm"
+                      (click)="deleteDimension(dimension.id, i)">
+            <i class="fas fa-times"></i>
+          </button></td>
         </tr>
       </table>
     </div>

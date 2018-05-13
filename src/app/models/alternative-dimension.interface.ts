@@ -1,6 +1,6 @@
 import {Alternative} from "./alternative.interface";
 
-export class AlternativeDimensionInterface {
+export class AlternativeDimension{
   id: String;
   dimensionId: String;
   alternative: Alternative;
