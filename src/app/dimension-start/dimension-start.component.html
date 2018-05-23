@@ -30,223 +30,398 @@
         </div>
 
         <hr style="height: 2px">
-
+        <h4 style="margin-bottom: 20px">Начальные настройки</h4>
         <div class="row">
-          <div class="col-md-6" style="padding-right: 25px">
-            <h4 style="margin-bottom: 20px">Список критериев</h4>
 
-            <div class="row">
-              <div class="col-md-6">
-                <!-- Триггер кнопка модали-->
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal1">
-                  Добавить новый критерий
-                </button>
-              </div>
+          <div class="col-md-6" style="padding-right: 20px">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <h4 style="margin-bottom: 20px">Настройка оценки критериев</h4>
 
-              <div class="col-md-6">
-                <!-- Триггер кнопка модали-->
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-                  Добавить критерии из базы
-                </button>
-              </div>
-            </div>
-
-            <div class="form-group" style="margin-top: 20px">
-              <div class="list-group ">
-                <div class="list-group-item" style="padding-bottom: 20px"
-                     *ngFor="let criterionsResul of criterionsResult; let j = index">
-                  {{criterionsResul?.criterionName}}
-                  <button type="button" style="float: right" class="btn btn-danger btn-sm" (click)="deleteCriterion(j)">
-                    <i class="fas fa-times"></i>
-                  </button>
+                <div class="radio">
+                  <label>
+                    <input type="radio" #cb1 name="optionsRadiosOne" value="chooseCriterionSet" checked
+                           (change)="chooseCriterionOption(cb1)">
+                    Использовать существующий набор критериев
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input type="radio" #cb2 name="optionsRadiosOne" value="createCriterionSet"
+                           (change)="chooseCriterionOption(cb2)">
+                    Создать список критериев
+                  </label>
                 </div>
               </div>
             </div>
+          </div>
+          <div class="col-md-6" style="padding-left: 25px">
+            <div class="panel panel-default">
+              <div class="panel-body">
+                <h4 style="margin-bottom: 20px">Настройка оценки альтернатив</h4>
 
-            <!-- Модаль -->
-            <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                      aria-hidden="true">&times;</span>
+                <div class="radio">
+                  <label>
+                    <input type="radio" #cb3 name="optionsRadiosTwo" value="chooseAlternativeSet" checked
+                           (change)="chooseAlternativeOption(cb3)">
+                    Использовать существующий набор альтернатив
+                  </label>
+                </div>
+                <div class="radio">
+                  <label>
+                    <input type="radio" #cb4 name="optionsRadiosTwo" value="createAlternativeSet"
+                           (change)="chooseAlternativeOption(cb4)">
+                    Создать список альтернатив
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <button type="button" [disabled]="flagSaveSettingsButton" class="btn btn-primary" (click)="saveSettings()">
+          Применить настройки
+        </button>
+
+
+        <div class="row" style="padding-top: 20px">
+          <div class="col-md-6" style="padding-right: 20px">
+            <div class="panel panel-default" *ngIf="visibleCreateCriterionSet">
+              <div class="panel-body">
+                <h4 style="margin-bottom: 20px">Список критериев</h4>
+
+                <div class="row">
+                  <div class="col-md-6">
+                    <!-- Триггер кнопка модали-->
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal1">
+                      Добавить новый
                     </button>
-                    <h4 class="modal-title" id="myModalLabel1">Добавление нового критерия</h4>
                   </div>
 
-                  <form class="form-horizontal" novalidate #a="ngForm" (ngSubmit)="addNewCriterion(a.value, a.valid)">
-                    <div class="modal-body">
+                  <div class="col-md-6">
+                    <!-- Триггер кнопка модали-->
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                      Добавить из наборов
+                    </button>
+                  </div>
+                </div>
 
-                      <div class="form-group form-group-edit">
-                        <h4 class="profile-label">Название</h4>
-                        <div class="profile-input">
-                          <input type="text" class="form-control" name="criterionName"
-                                 [(ngModel)]="newCriterion.criterionName"
-                                 placeholder="Название"
-                                 ngModel
-                                 #name="ngModel" minlength="2" maxlength="50" style="width: 400px;" required/>
-                        </div>
+                <div class="form-group" style="margin-top: 20px">
+                  <div class="list-group" style="margin: 0 15px 0 15px">
+                    <div class="list-group-item" style="padding-bottom: 20px"
+                         *ngFor="let criterionsResul of criterionsResult; let j = index">
+                      {{criterionsResul?.criterionName}}
+                      <button type="button" style="float: right" class="btn btn-danger btn-sm"
+                              (click)="deleteCriterion(j)">
+                        <i class="fas fa-times"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Модаль -->
+                <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel1">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                          aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel1">Добавление нового критерия</h4>
                       </div>
 
-                      <div class="form-group form-group-edit">
-                        <h4 class="profile-label">Комментарий</h4>
-                        <div class="profile-input">
+                      <form class="form-horizontal" novalidate #a="ngForm"
+                            (ngSubmit)="addNewCriterion(a.value, a.valid)">
+                        <div class="modal-body">
+
+                          <div class="form-group form-group-edit">
+                            <h4 class="profile-label">Название</h4>
+                            <div class="profile-input">
+                              <input type="text" class="form-control" name="criterionName"
+                                     [(ngModel)]="newCriterion.criterionName"
+                                     placeholder="Название"
+                                     ngModel
+                                     #name="ngModel" minlength="2" maxlength="50" style="width: 400px;" required/>
+                            </div>
+                          </div>
+
+                          <div class="form-group form-group-edit">
+                            <h4 class="profile-label">Комментарий</h4>
+                            <div class="profile-input">
                       <textarea required class="form-control" rows="7" maxlength="150"
                                 style="width: 400px; resize: none"
                                 name="description" placeholder="Комментарий" [(ngModel)]="newCriterion.description">
                       </textarea>
+                            </div>
+                          </div>
+
                         </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                          <button type="submit" class="btn btn-primary">Сохранить</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Модаль -->
+                <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                          aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel">Сохранённые критерии</h4>
                       </div>
 
+                      <div class="modal-body">
+
+                        <div class="form-check" *ngFor="let criterion of criterions; let i = index">
+
+                          <label>
+                            <input #cb1 type="checkbox" value="{{i}}" (change)="addCriterionFromDB(cb1)">
+                            {{criterion.criterionName}}
+                          </label>
+
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                      </div>
                     </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                      <button type="submit" class="btn btn-primary">Сохранить</button>
-                    </div>
-                  </form>
-                </div>
-              </div>
-            </div>
-
-            <!-- Модаль -->
-            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                      aria-hidden="true">&times;</span>
-                    </button>
-                    <h4 class="modal-title" id="myModalLabel">Сохранённые критерии</h4>
-                  </div>
-
-                  <div class="modal-body">
-
-                    <div class="form-check" *ngFor="let criterion of criterions; let i = index">
-
-                      <label>
-                        <input #cb1 type="checkbox" value="{{i}}" (change)="addCriterionFromDB(cb1)">
-                        {{criterion.criterionName}}
-                      </label>
-
-                    </div>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
                   </div>
                 </div>
               </div>
             </div>
+            <div class="panel panel-default" *ngIf="visibleChooseCriterionSet">
+              <div class="panel-body">
+                <h4 style="margin-bottom: 20px">Список критериев</h4>
+
+                <!-- Триггер кнопка модали-->
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal6">
+                  Выбрать набор
+                </button>
+
+                <!-- Модаль -->
+                <div class="modal fade" id="myModal6" tabindex="-1" role="dialog" aria-labelledby="myModalLabel6">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                          aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel6">Наборы критериев</h4>
+                      </div>
+                      <div class="modal-body">
+                        <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+
+                          <div class="panel panel-default" *ngFor="let criterionsSet of criterionsSets; let i = index">
+                            <div class="panel-heading" role="tab" id="headingTwo">
+                              <h4 class="panel-title" style="padding-bottom: 15px">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion"
+                                   href="#{{i}}" aria-expanded="false" aria-controls="collapseTwo">
+                                  {{criterionsSet.name}}
+                                </a>
+                                <button type="button" style="float: right" class="btn btn-default" data-dismiss="modal" (click)="chooseCriterionsSet(i)">Выбрать</button>
+                              </h4>
+                            </div>
+                            <div id="{{i}}" class="panel-collapse collapse" role="tabpanel"
+                                 aria-labelledby="headingTwo">
+                              <div class="panel-body">
+                                <h4>Критерии в наборе:</h4>
+                                <div class="panel panel-default">
+                                  <table class="table table-hover">
+                                    <tr>
+                                      <th>Наименование критерия</th>
+                                      <th>Описание</th>
+                                    </tr>
+                                    <tr *ngFor="let criterion of criterionsSets[i].criterions">
+                                      <td>{{criterion.criterionName}}</td>
+                                      <td>{{criterion.description}}</td>
+                                    </tr>
+                                  </table>
+                                </div>
+                                <h4>Описание набора:</h4>
+                                <h4>{{criterionsSet?.comment}}</h4>
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="form-group" style="margin-top: 20px">
+                  <div class="list-group" style="margin:0 15px 0 15px">
+                    <div class="list-group-item" style="padding-bottom: 20px"
+                         *ngFor="let criterionsResul of criterionsResult; let j = index">
+                      {{criterionsResul?.criterionName}}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
-
           <!----------------------------------------------------------------------------->
 
           <div class="col-md-6" style="padding-left: 25px">
-            <h4 style="margin-bottom: 20px">Список альтернатив</h4>
+            <div class="panel panel-default" *ngIf="visibleCreateAlternativeSet">
+              <div class="panel-body">
+                <h4 style="margin-bottom: 20px">Список альтернатив</h4>
 
-            <div class="row">
-              <div class="col-md-6">
-                <!-- Триггер кнопка модали-->
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal3">
-                  Добавить новую альтернативу
-                </button>
-              </div>
-
-              <div class="col-md-6">
-                <!-- Триггер кнопка модали-->
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal4">
-                  Добавить альтернативу из базы
-                </button>
-              </div>
-            </div>
-
-            <div class="form-group" style="margin-top: 20px">
-              <div class="list-group ">
-                <div class="list-group-item" style="padding-bottom: 20px"
-                     *ngFor="let alternatives of alternativesResult; let i = index">
-                  {{alternatives.alternativeName}}
-                  <button type="button" style="float: right" class="btn btn-danger btn-sm"
-                          (click)="deleteAlternative(i)">
-                    <i class="fas fa-times"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            <!-- Модаль -->
-            <div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                      aria-hidden="true">&times;</span>
+                <div class="row">
+                  <div class="col-md-6">
+                    <!-- Триггер кнопка модали-->
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal3">
+                      Добавить новую
                     </button>
-                    <h4 class="modal-title" id="myModalLabel3">Добавление новой альтернативы</h4>
                   </div>
 
-                  <form class="form-horizontal" novalidate #b="ngForm" (ngSubmit)="addNewAlternative(b.value, b.valid)">
-                    <div class="modal-body">
+                  <div class="col-md-6">
+                    <!-- Триггер кнопка модали-->
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal4">
+                      Добавить из наборов
+                    </button>
+                  </div>
+                </div>
 
-                      <div class="form-group form-group-edit">
-                        <h4 class="profile-label">Название</h4>
-                        <div class="profile-input">
-                          <input type="text" class="form-control" name="alternativeName"
-                                 [(ngModel)]="newAlternative.alternativeName"
-                                 placeholder="Название"
-                                 ngModel
-                                 #name="ngModel" minlength="2" maxlength="50" style="width: 400px;" required/>
-                        </div>
+                <div class="form-group" style="margin-top: 20px">
+                  <div class="list-group" style="margin:0 15px 0 15px">
+                    <div class="list-group-item" style="padding-bottom: 20px"
+                         *ngFor="let alternatives of alternativesResult; let i = index">
+                      {{alternatives.alternativeName}}
+                      <button type="button" style="float: right" class="btn btn-danger btn-sm"
+                              (click)="deleteAlternative(i)">
+                        <i class="fas fa-times"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Модаль -->
+                <div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                          aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel3">Добавление новой альтернативы</h4>
                       </div>
 
+                      <form class="form-horizontal" novalidate #b="ngForm"
+                            (ngSubmit)="addNewAlternative(b.value, b.valid)">
+                        <div class="modal-body">
+
+                          <div class="form-group form-group-edit">
+                            <h4 class="profile-label">Название</h4>
+                            <div class="profile-input">
+                              <input type="text" class="form-control" name="alternativeName"
+                                     [(ngModel)]="newAlternative.alternativeName"
+                                     placeholder="Название"
+                                     ngModel
+                                     #name="ngModel" minlength="2" maxlength="50" style="width: 400px;" required/>
+                            </div>
+                          </div>
+
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                          <button type="submit" class="btn btn-primary">Сохранить</button>
+                        </div>
+                      </form>
                     </div>
-                    <div class="modal-footer">
-                      <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
-                      <button type="submit" class="btn btn-primary">Сохранить</button>
+                  </div>
+                </div>
+
+                <!-- Модаль -->
+                <div class="modal fade" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                          aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel4">Сохранённые альтернативы</h4>
+                      </div>
+
+                      <div class="modal-body">
+
+                        <div class="form-check" *ngFor="let alternative of alternatives; let i = index">
+
+                          <label>
+                            <input #cb1 type="checkbox" value="{{i}}" (change)="addAlternativeFromDB(cb1)">
+                            {{alternative.alternativeName}}
+                          </label>
+
+                        </div>
+
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                      </div>
                     </div>
-                  </form>
+                  </div>
                 </div>
               </div>
             </div>
+            <div class="panel panel-default" *ngIf="visibleChooseAlternativeSet">
+              <div class="panel-body">
+                <h4 style="margin-bottom: 20px">Список альтернатив</h4>
 
-            <!-- Модаль -->
-            <div class="modal fade" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel4">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                      aria-hidden="true">&times;</span>
-                    </button>
-                    <h4 class="modal-title" id="myModalLabel4">Сохранённые альтернативы</h4>
-                  </div>
+                <!-- Триггер кнопка модали-->
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal5">
+                  Выбрать набор
+                </button>
 
-                  <div class="modal-body">
-
-                    <div class="form-check" *ngFor="let alternative of alternatives; let i = index">
-
-                      <label>
-                        <input #cb1 type="checkbox" value="{{i}}" (change)="addAlternativeFromDB(cb1)">
-                        {{alternative.alternativeName}}
-                      </label>
-
+                <!-- Модаль -->
+                <div class="modal fade" id="myModal5" tabindex="-1" role="dialog" aria-labelledby="myModalLabel5">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                          aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel5">Наборы альтернатив</h4>
+                      </div>
+                      <div class="modal-body">
+                        ...
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                        <button type="button" class="btn btn-primary">Сохранить</button>
+                      </div>
                     </div>
-
                   </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                </div>
+
+                <div class="form-group" style="margin-top: 20px">
+                  <div class="list-group" style="margin:0 15px 0 15px">
+                    <div class="list-group-item" style="padding-bottom: 20px"
+                         *ngFor="let alternatives of alternativesResult; let i = index">
+                      {{alternatives.alternativeName}}
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
 
-        <hr style="height: 2px; margin-top: 0">
+          <hr style="height: 2px; margin-top: 20px">
 
-        <div class="row">
-          <div class="col-md-6" style="padding-top: 10px">
-            <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+          <div class="row">
+            <div class="col-md-12" style="padding-top: 10px">
+              <button style="margin-left: 15px" [disabled]="flag" type="submit" class="btn btn-primary">Сохранить
+                изменения
+              </button>
+            </div>
           </div>
         </div>
-
       </form>
     </div>
   </div>

@@ -105,7 +105,7 @@ export class DimensionCriterionsComponent implements OnInit {
   dimension() {
     for (let i in this.matrixCriterions) {
       let a = this.weightCriterion[i];
-      this.dimensionCriterions.push(new CriterionDimension("", this.dimensionId, this.matrixCriterions[i], "", a.toString()));
+      this.dimensionCriterions[i] = new CriterionDimension("", this.dimensionId, this.matrixCriterions[i], "", a.toString());
     }
 
     this.httpService.addDimensionCriterions(this.dimensionId, this.dimensionCriterions)
@@ -115,6 +115,7 @@ export class DimensionCriterionsComponent implements OnInit {
           this.route.navigateByUrl("/dimension-alternative");
         },
         error => {
+          if(error.status == 409) alert("Матрица не согласована");
           console.log(error);
         }
       );

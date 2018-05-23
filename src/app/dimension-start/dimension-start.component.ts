@@ -5,6 +5,7 @@ import {Criterion} from "../models/criterion.interface";
 import {Alternative} from "../models/alternative.interface";
 import {DimensionService} from "../services/dimension.service";
 import {Router} from "@angular/router";
+import {CriterionsSet} from "../models/criterions-set.interface";
 
 @Component({
   selector: 'app-dimension-start',
@@ -15,13 +16,27 @@ export class DimensionStartComponent implements OnInit {
   public id: String;
   dimension: Dimension;
 
+  criterionsSets: CriterionsSet[] = [];
+
   criterions: Criterion[] = [];
   newCriterion: Criterion;
   criterionsResult: Criterion[] = [];
 
   alternatives: Alternative[] = [];
   newAlternative: Alternative;
-  alternativesResult: Alternative[] = []
+  alternativesResult: Alternative[] = [];
+
+  nameCriterionOption: string = "chooseCriterionSet";
+  nameAlternativeOption: string = "chooseAlternativeSet";
+
+  visibleCreateCriterionSet: boolean = false;
+  visibleChooseCriterionSet: boolean = false;
+
+  visibleCreateAlternativeSet: boolean = false;
+  visibleChooseAlternativeSet: boolean = false;
+
+  flag: boolean = true;
+  flagSaveSettingsButton: boolean = false;
 
   constructor(private httpService: HttpService,
               private dimensionService: DimensionService,
@@ -50,6 +65,32 @@ export class DimensionStartComponent implements OnInit {
       alternativeName: '',
       expertId: ''
     };
+
+    this.httpService.getCriterionsSetsByExpertId(this.id)
+      .subscribe(
+        (data: CriterionsSet) => {
+          for (let index in data) {
+            let criterionSet: CriterionsSet = data[index];
+            criterionSet.criterions = [];
+            this.httpService.getCriterionsByCriterionSetId(data[index].id)
+              .subscribe(
+                (data: Criterion) => {
+                  for (let index in data) {
+                    criterionSet.criterions.push(data[index]);
+                  }
+                  this.criterionsSets.push(criterionSet);
+                  console.log(this.criterionsSets)
+                },
+                error => {
+                  console.log(error);
+                }
+              );
+          }
+        },
+        error => {
+          console.log(error);
+        }
+      );
 
     this.httpService.getAlternativesByExpertId(this.id)
       .subscribe(
@@ -94,6 +135,36 @@ export class DimensionStartComponent implements OnInit {
           console.log(error);
         }
       );
+  }
+
+  chooseCriterionOption(element: HTMLInputElement): void {
+    this.nameCriterionOption = element.value;
+    console.log(element.value);
+  }
+
+  chooseAlternativeOption(element: HTMLInputElement): void {
+    this.nameAlternativeOption = element.value;
+  }
+
+  chooseCriterionsSet(criterionSetId: string){
+    this.criterionsResult = this.criterionsSets[criterionSetId].criterions;
+  }
+
+  saveSettings() {
+    if (this.nameCriterionOption == "chooseCriterionSet") {
+      this.visibleChooseCriterionSet = true;
+    } else if (this.nameCriterionOption == "createCriterionSet") {
+      this.visibleCreateCriterionSet = true;
+    }
+
+    if (this.nameAlternativeOption == "chooseAlternativeSet") {
+      this.visibleChooseAlternativeSet = true;
+    } else if (this.nameAlternativeOption == "createAlternativeSet") {
+      this.visibleCreateAlternativeSet = true;
+    }
+
+    this.flagSaveSettingsButton = true;
+    this.flag = false;
   }
 
   addCriterionFromDB(element: HTMLInputElement): void {

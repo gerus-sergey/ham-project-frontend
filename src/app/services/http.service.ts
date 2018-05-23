@@ -95,4 +95,12 @@ export class HttpService {
       headers: headers
     });
   }
+
+  getCriterionsSetsByExpertId(expertId: String){
+    return this.http.get(this.url + "/expertsToCriterionSet/CriterionSetsByExpertId/" + expertId)
+  }
+
+  getCriterionsByCriterionSetId(criterionSetId: String){
+    return this.http.get(this.url + "/criterionsToCriterionSet/criterionsByCriterionSetId/" + criterionSetId)
+  }
 }
