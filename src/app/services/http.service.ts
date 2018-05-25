@@ -88,6 +88,14 @@ export class HttpService {
     });
   }
 
+  getCriterionSets(){
+    return this.http.get(this.url + "/criterion-set");
+  }
+
+  getAlternativesSets(){
+    return this.http.get(this.url + "/alternatives-set");
+  }
+
   getCriterionsSetsByExpertId(expertId: String){
     return this.http.get(this.url + "/expertsToCriterionSet/CriterionSetsByExpertId/" + expertId)
   }
@@ -102,5 +110,13 @@ export class HttpService {
 
   getAlternativesByAlternativeSetId(alternativeSetId: String){
     return this.http.get(this.url + "/alternativesToAlternativeSet/alternativesByAlternativeSetId/" + alternativeSetId)
+  }
+
+  getExpertsByCriterionSetId(criterionSetId: String){
+    return this.http.get(this.url + "/expertsToCriterionSet/expertsByCriterionSetId/" + criterionSetId)
+  }
+
+  getExpertsByAlternativeSetId(alternativeSetId: String){
+    return this.http.get(this.url + "/expertsToAlternativesSet/expertsByAlternativeSetId/" + alternativeSetId);
   }
 }

@@ -20,6 +20,7 @@ import { HomePageComponent } from './home-page/home-page.component';
 import {HttpService} from "./services/http.service";
 import { ErrorPageComponent } from './error-page/error-page.component';
 import { DimensionAlternativesComponent } from './dimension-alternatives/dimension-alternatives.component';
+import { SetsPageComponent } from './sets-page/sets-page.component';
 
 
 const appRoutes: Routes =[
@@ -32,6 +33,7 @@ const appRoutes: Routes =[
   { path: 'dimension-start', component: DimensionStartComponent},
   { path: 'dimension-criterion', component: DimensionCriterionsComponent},
   { path: 'dimension-alternative', component: DimensionAlternativesComponent},
+  { path: 'sets', component: SetsPageComponent},
   { path: '**', component: ErrorPageComponent },
 ];
 
@@ -50,7 +52,8 @@ const appRoutes: Routes =[
     DimensionCriterionsComponent,
     HomePageComponent,
     ErrorPageComponent,
-    DimensionAlternativesComponent
+    DimensionAlternativesComponent,
+    SetsPageComponent
   ],
   imports: [
     BrowserModule,

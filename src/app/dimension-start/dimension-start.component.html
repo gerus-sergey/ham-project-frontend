@@ -222,7 +222,9 @@
                                    href="#{{i}}" aria-expanded="false" aria-controls="collapseTwo">
                                   {{criterionsSet.name}}
                                 </a>
-                                <button type="button" style="float: right" class="btn btn-default" data-dismiss="modal" (click)="chooseCriterionsSet(i)">Выбрать</button>
+                                <button type="button" style="float: right" class="btn btn-default" data-dismiss="modal"
+                                        (click)="chooseCriterionsSet(i)">Выбрать
+                                </button>
                               </h4>
                             </div>
                             <div id="{{i}}" class="panel-collapse collapse" role="tabpanel"
@@ -393,14 +395,17 @@
 
                         <div class="panel-group" id="accordion2" role="tablist" aria-multiselectable="true">
 
-                          <div class="panel panel-default" *ngFor="let alternativesSet of alternativesSets; let j = index">
+                          <div class="panel panel-default"
+                               *ngFor="let alternativesSet of alternativesSets; let j = index">
                             <div class="panel-heading" role="tab" id="headingThree">
                               <h4 class="panel-title" style="padding-bottom: 15px">
                                 <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion2"
                                    href="#{{j+100}}" aria-expanded="false" aria-controls="collapseTwo">
                                   {{alternativesSet.name}}
                                 </a>
-                                <button type="button" style="float: right" class="btn btn-default" data-dismiss="modal" (click)="chooseAlternativesSet(j)">Выбрать</button>
+                                <button type="button" style="float: right" class="btn btn-default" data-dismiss="modal"
+                                        (click)="chooseAlternativesSet(j)">Выбрать
+                                </button>
                               </h4>
                             </div>
                             <div id="{{j+100}}" class="panel-collapse collapse" role="tabpanel"
