@@ -6,6 +6,7 @@ import {Alternative} from "../models/alternative.interface";
 import {DimensionService} from "../services/dimension.service";
 import {Router} from "@angular/router";
 import {CriterionsSet} from "../models/criterions-set.interface";
+import {AlternativesSet} from "../models/alternatives-set.interface";
 
 @Component({
   selector: 'app-dimension-start',
@@ -17,6 +18,7 @@ export class DimensionStartComponent implements OnInit {
   dimension: Dimension;
 
   criterionsSets: CriterionsSet[] = [];
+  alternativesSets: AlternativesSet[] = [];
 
   criterions: Criterion[] = [];
   newCriterion: Criterion;
@@ -76,6 +78,7 @@ export class DimensionStartComponent implements OnInit {
               .subscribe(
                 (data: Criterion) => {
                   for (let index in data) {
+                    this.criterions.push(data[index]);
                     criterionSet.criterions.push(data[index]);
                   }
                   this.criterionsSets.push(criterionSet);
@@ -92,31 +95,33 @@ export class DimensionStartComponent implements OnInit {
         }
       );
 
-    this.httpService.getAlternativesByExpertId(this.id)
+    this.httpService.getAlternativesSetsByExpertId(this.id)
       .subscribe(
-        (data: Alternative) => {
+        (data: AlternativesSet) => {
           for (let index in data) {
-            this.alternatives.push(data[index])
+            let alternativeSet: AlternativesSet = data[index];
+            alternativeSet.alternatives = [];
+            this.httpService.getAlternativesByAlternativeSetId(data[index].id)
+              .subscribe(
+                (data: Alternative) => {
+                  for (let index in data) {
+                    this.alternatives.push(data[index]);
+                    alternativeSet.alternatives.push(data[index]);
+                  }
+                  this.alternativesSets.push(alternativeSet);
+                  console.log(this.alternativesSets)
+                },
+                error => {
+                  console.log(error);
+                }
+              );
           }
-          console.log(this.alternatives)
         },
         error => {
           console.log(error);
         }
       );
 
-    this.httpService.getCriterionsByExpertId(this.id)
-      .subscribe(
-        (data: Criterion) => {
-          for (let index in data) {
-            this.criterions.push(data[index])
-          }
-          console.log(this.criterions)
-        },
-        error => {
-          console.log(error);
-        }
-      );
   }
 
   addDimension(model: Dimension, isValid: boolean) {
@@ -146,8 +151,12 @@ export class DimensionStartComponent implements OnInit {
     this.nameAlternativeOption = element.value;
   }
 
-  chooseCriterionsSet(criterionSetId: string){
-    this.criterionsResult = this.criterionsSets[criterionSetId].criterions;
+  chooseCriterionsSet(criterionsSetId: string) {
+    this.criterionsResult = this.criterionsSets[criterionsSetId].criterions;
+  }
+
+  chooseAlternativesSet(alternativesSetId: string) {
+    this.alternativesResult = this.alternativesSets[alternativesSetId].alternatives;
   }
 
   saveSettings() {

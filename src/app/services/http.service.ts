@@ -49,14 +49,6 @@ export class HttpService {
     return this.http.get(this.url + "/rating-criterions/dimension/" + dimensionId)
   }
 
-  getAlternativesByExpertId(expertId: String) {
-    return this.http.get(this.url + "/alternatives/expert/" + expertId)
-  }
-
-  getCriterionsByExpertId(expertId: String) {
-    return this.http.get(this.url + "/criterions/expert/" + expertId)
-  }
-
   addCriterion(criterion: Criterion) {
     const headers = new HttpHeaders().set('Content-Type', 'application/json;charset=utf-8');
     return this.http.post(this.url + '/criterions', criterion, {
@@ -102,5 +94,13 @@ export class HttpService {
 
   getCriterionsByCriterionSetId(criterionSetId: String){
     return this.http.get(this.url + "/criterionsToCriterionSet/criterionsByCriterionSetId/" + criterionSetId)
+  }
+
+  getAlternativesSetsByExpertId(expertId: String){
+    return this.http.get(this.url + "/expertsToAlternativesSet/alternativesSetsByExpertId/" + expertId)
+  }
+
+  getAlternativesByAlternativeSetId(alternativeSetId: String){
+    return this.http.get(this.url + "/alternativesToAlternativeSet/alternativesByAlternativeSetId/" + alternativeSetId)
   }
 }

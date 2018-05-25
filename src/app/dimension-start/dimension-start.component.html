@@ -390,7 +390,41 @@
                         <h4 class="modal-title" id="myModalLabel5">Наборы альтернатив</h4>
                       </div>
                       <div class="modal-body">
-                        ...
+
+                        <div class="panel-group" id="accordion2" role="tablist" aria-multiselectable="true">
+
+                          <div class="panel panel-default" *ngFor="let alternativesSet of alternativesSets; let j = index">
+                            <div class="panel-heading" role="tab" id="headingThree">
+                              <h4 class="panel-title" style="padding-bottom: 15px">
+                                <a class="collapsed" role="button" data-toggle="collapse" data-parent="#accordion2"
+                                   href="#{{j+100}}" aria-expanded="false" aria-controls="collapseTwo">
+                                  {{alternativesSet.name}}
+                                </a>
+                                <button type="button" style="float: right" class="btn btn-default" data-dismiss="modal" (click)="chooseAlternativesSet(j)">Выбрать</button>
+                              </h4>
+                            </div>
+                            <div id="{{j+100}}" class="panel-collapse collapse" role="tabpanel"
+                                 aria-labelledby="headingThree">
+                              <div class="panel-body">
+                                <h4>Критерии в наборе:</h4>
+                                <div class="panel panel-default">
+                                  <table class="table table-hover">
+                                    <tr>
+                                      <th>Наименование альтернативы</th>
+                                    </tr>
+                                    <tr *ngFor="let alternative of alternativesSets[j].alternatives">
+                                      <td>{{alternative.alternativeName}}</td>
+                                    </tr>
+                                  </table>
+                                </div>
+                                <h4>Описание набора:</h4>
+                                <h4>{{alternativesSet?.comment}}</h4>
+                              </div>
+                            </div>
+                          </div>
+
+                        </div>
+
                       </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
