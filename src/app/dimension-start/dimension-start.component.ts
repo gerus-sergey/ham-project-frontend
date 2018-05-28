@@ -58,14 +58,12 @@ export class DimensionStartComponent implements OnInit {
     this.newCriterion = {
       id: '',
       criterionName: '',
-      description: '',
-      expertId: ''
+      description: ''
     };
 
     this.newAlternative = {
       id: '',
-      alternativeName: '',
-      expertId: ''
+      alternativeName: ''
     };
 
     this.httpService.getCriterionsSetsByExpertId(this.id)
@@ -184,7 +182,7 @@ export class DimensionStartComponent implements OnInit {
   }
 
   addNewCriterion(model: Criterion, isValid: boolean) {
-    this.httpService.addCriterion(new Criterion(model.id, model.criterionName, model.description, this.id))
+    this.httpService.addCriterion(new Criterion(model.id, model.criterionName, model.description))
       .subscribe(
         (data: Criterion) => {
           this.criterionsResult.push(data);
@@ -203,7 +201,7 @@ export class DimensionStartComponent implements OnInit {
   }
 
   addNewAlternative(model: Alternative, isValid: boolean) {
-    this.httpService.addAlternative(new Alternative(model.id, model.alternativeName, this.id))
+    this.httpService.addAlternative(new Alternative(model.id, model.alternativeName))
       .subscribe(
         (data: Alternative) => {
           this.alternativesResult.push(data);

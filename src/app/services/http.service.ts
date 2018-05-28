@@ -7,6 +7,8 @@ import {Alternative} from "../models/alternative.interface";
 import {Dimension} from "../models/dimension.interface";
 import {CriterionDimension} from "../models/criterion-dimension.interface";
 import {AlternativeDimension} from "../models/alternative-dimension.interface";
+import {CriterionsSet} from "../models/criterions-set.interface";
+import {AlternativesSet} from "../models/alternatives-set.interface";
 
 @Injectable()
 export class HttpService {
@@ -35,6 +37,10 @@ export class HttpService {
 
   getExpert(expertId: String) {
     return this.http.get(this.url + "/experts/" + expertId)
+  }
+
+  getExperts() {
+    return this.http.get(this.url + "/experts")
   }
 
   getDimensions(expertId: String) {
@@ -118,5 +124,71 @@ export class HttpService {
 
   getExpertsByAlternativeSetId(alternativeSetId: String){
     return this.http.get(this.url + "/expertsToAlternativesSet/expertsByAlternativeSetId/" + alternativeSetId);
+  }
+
+  addCriterionToCriterionSet(criterionId: String, criterionSetId: String){
+    const headers = new HttpHeaders().set('Content-Type', 'application/json;charset=utf-8');
+    return this.http.post(this.url + "/criterionsToCriterionSet?criterionSetId=" + criterionSetId + "&criterionId=" + criterionId,{
+      headers: headers
+    });
+  }
+
+  addAlternativeToAlternativeSet(alternativeId: String, alternativeSetId: String){
+    const headers = new HttpHeaders().set('Content-Type', 'application/json;charset=utf-8');
+    return this.http.post(this.url + "/alternativesToAlternativeSet?alternativesSetId=" + alternativeSetId + "&alternativeId=" + alternativeId,{
+      headers: headers
+    });
+  }
+
+  deleteCriterionToCriterionSet(criterionSetId: String, criterionId: String){
+    return this.http.delete(this.url + "/criterionsToCriterionSet?criterionSetId=" + criterionSetId + "&criterionId=" + criterionId);
+  }
+
+  deleteAlternativeToAlternativeSet(alternativeSetId: String, alternativeId: String){
+    return this.http.delete(this.url + "/alternativesToAlternativeSet?alternativesSetId=" + alternativeSetId + "&alternativeId=" + alternativeId);
+  }
+
+  addExpertToCriterionsSet(criterionSetId: String, expertId: Number){
+    const headers = new HttpHeaders().set('Content-Type', 'application/json;charset=utf-8');
+    return this.http.post(this.url + "/expertsToCriterionSet?criterionSetId=" + criterionSetId + "&expertId=" + expertId,{
+      headers: headers
+    });
+  }
+
+  addExpertToAlternativeSet(alternativeSetId: String, expertId: Number){
+    const headers = new HttpHeaders().set('Content-Type', 'application/json;charset=utf-8');
+    return this.http.post(this.url + "/expertsToAlternativesSet?alternativeSetId=" + alternativeSetId + "&expertId=" + expertId,{
+      headers: headers
+    });
+  }
+
+  deleteExpertFromCriterionSet(criterionSetId: String, expertId: Number){
+    return this.http.delete(this.url + "/expertsToCriterionSet?criterionSetId=" + criterionSetId + "&expertId=" + expertId);
+  }
+
+  deleteExpertFromAlternativesSet(alternativeSetId: String, expertId: Number){
+    return this.http.delete(this.url + "/expertsToAlternativesSet?alternativeSetId=" + alternativeSetId + "&expertId=" + expertId);
+  }
+
+  deleteCriterionsSet(criterionSetId: String){
+    return this.http.delete(this.url + "/criterion-set/" + criterionSetId);
+  }
+
+  deleteAlternativesSet(alternativesSetId: String){
+    return this.http.delete(this.url + "/alternatives-set/" + alternativesSetId);
+  }
+
+  addCriterionsSet(criterionsSet: CriterionsSet){
+    const headers = new HttpHeaders().set('Content-Type', 'application/json;charset=utf-8');
+    return this.http.post(this.url + '/criterion-set', criterionsSet, {
+      headers: headers
+    });
+  }
+
+  addAlternativesSet(alternativesSet: AlternativesSet){
+    const headers = new HttpHeaders().set('Content-Type', 'application/json;charset=utf-8');
+    return this.http.post(this.url + '/alternatives-set', alternativesSet, {
+      headers: headers
+    });
   }
 }

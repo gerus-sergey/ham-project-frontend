@@ -12,3 +12,20 @@
 .accordionBlock{
   margin-bottom: 20px;
 }
+.profile-input{
+  width: 70%;
+  padding-left: 20px;
+  margin-left: 120px;
+}
+.profile-label{
+  float: left;
+}
+.form-group-edit{
+  margin-left: 15px;
+}
+.delete-button{
+  display: none;
+}
+.table-th-button:hover .delete-button{
+  display: block;
+}
