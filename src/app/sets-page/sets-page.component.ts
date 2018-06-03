@@ -21,8 +21,8 @@ export class SetsPageComponent implements OnInit {
   newCriterion: Criterion;
   newAlternative: Alternative;
   experts: UserProfile[] = [];
-  setId: string;
-  index: string;
+  idSet: string;
+  indexSet: string;
 
   constructor(private httpService: HttpService) {
   }
@@ -89,7 +89,6 @@ export class SetsPageComponent implements OnInit {
             this.httpService.getExpertsByCriterionSetId(data[index].id)
               .subscribe(
                 (data: UserRegistered) => {
-                  console.log(data);
                   for (let index in data) {
                     criterionSet.experts.push(data[index]);
                   }
@@ -100,7 +99,6 @@ export class SetsPageComponent implements OnInit {
               );
             this.criterionsSets.push(criterionSet);
           }
-          console.log(this.criterionsSets);
         },
         error => {
           console.log(error);
@@ -128,7 +126,6 @@ export class SetsPageComponent implements OnInit {
             this.httpService.getExpertsByAlternativeSetId(data[index].id)
               .subscribe(
                 (data: UserRegistered) => {
-                  console.log(data);
                   for (let index in data) {
                     alternativeSet.experts.push(data[index]);
                   }
@@ -151,7 +148,7 @@ export class SetsPageComponent implements OnInit {
       .subscribe(
         (data: CriterionsSet) => {
           data.experts = [];
-          data.criterions =[];
+          data.criterions = [];
           this.criterionsSets.push(data);
         },
         error => {
@@ -165,7 +162,7 @@ export class SetsPageComponent implements OnInit {
       .subscribe(
         (data: AlternativesSet) => {
           data.experts = [];
-          data.alternatives =[];
+          data.alternatives = [];
           this.alternativesSets.push(data);
         },
         error => {
@@ -178,7 +175,6 @@ export class SetsPageComponent implements OnInit {
     this.httpService.deleteCriterionsSet(criterionsSetId)
       .subscribe(
         (data: UserRegistered) => {
-          console.log(data);
           this.criterionsSets.splice(index, 1);
         },
         error => {
@@ -191,7 +187,6 @@ export class SetsPageComponent implements OnInit {
     this.httpService.deleteAlternativesSet(alternativesSetId)
       .subscribe(
         (data: UserRegistered) => {
-          console.log(data);
           this.alternativesSets.splice(index, 1);
         },
         error => {
@@ -201,40 +196,59 @@ export class SetsPageComponent implements OnInit {
   }
 
   addExpertInCriterionSet(expertId: number, index: number) {
-    this.httpService.addExpertToCriterionsSet(this.setId, expertId)
-      .subscribe(
-        (data) => {
-          this.criterionsSets[this.index].experts.push(this.experts[index]);
-          console.log(data);
-        },
-        error => {
-          console.log(error);
-        }
-      );
+    let existExpert;
+    for (let index in this.criterionsSets[this.indexSet].experts) {
+      if (this.criterionsSets[this.indexSet].experts[index].id == expertId) {
+        existExpert = true;
+      }
+    }
+
+    if (existExpert != true) {
+      this.httpService.addExpertToCriterionsSet(this.idSet, expertId)
+        .subscribe(
+          (data) => {
+            this.criterionsSets[this.indexSet].experts.push(this.experts[index]);
+          },
+          error => {
+            console.log(error);
+          }
+        );
+    } else {
+      alert("expert exist");
+    }
   }
 
   addExpertInAlternativeSet(expertId: number, index: number) {
-    this.httpService.addExpertToAlternativeSet(this.setId, expertId)
-      .subscribe(
-        (data) => {
-          this.alternativesSets[this.index].experts.push(this.experts[index]);
-          console.log(data);
-        },
-        error => {
-          console.log(error);
-        }
-      );
+    let existExpert;
+    for (let index in this.alternativesSets[this.indexSet].experts) {
+      if (this.alternativesSets[this.indexSet].experts[index].id == expertId) {
+        existExpert = true;
+      }
+    }
+
+    if (existExpert != true) {
+      this.httpService.addExpertToAlternativeSet(this.idSet, expertId)
+        .subscribe(
+          (data) => {
+            this.alternativesSets[this.indexSet].experts.push(this.experts[index]);
+          },
+          error => {
+            console.log(error);
+          }
+        );
+    } else {
+      alert("exist expert");
+    }
   }
 
   addNewCriterion(model: Criterion, isValid: boolean) {
     this.httpService.addCriterion(new Criterion(model.id, model.criterionName, model.description))
       .subscribe(
         (criterion: Criterion) => {
-          this.httpService.addCriterionToCriterionSet(criterion.id, this.setId)
+          this.httpService.addCriterionToCriterionSet(criterion.id, this.idSet)
             .subscribe(
               (data) => {
-                this.criterionsSets[this.index].criterions.push(criterion);
-                console.log(data);
+                this.criterionsSets[this.indexSet].criterions.push(criterion);
               },
               error => {
                 console.log(error);
@@ -248,15 +262,13 @@ export class SetsPageComponent implements OnInit {
   }
 
   addNewAlternativeInSet(model: Alternative, isValid: boolean) {
-    console.log(model);
     this.httpService.addAlternative(new Alternative(model.id, model.alternativeName))
       .subscribe(
         (data: Alternative) => {
-          this.alternativesSets[this.index].alternatives.push(data);
-          this.httpService.addAlternativeToAlternativeSet(data.id, this.setId)
+          this.alternativesSets[this.indexSet].alternatives.push(data);
+          this.httpService.addAlternativeToAlternativeSet(data.id, this.idSet)
             .subscribe(
               (data) => {
-                console.log(data);
               },
               error => {
                 console.log(error);
@@ -270,15 +282,14 @@ export class SetsPageComponent implements OnInit {
   }
 
   addSetInfoForInsert(id: string, setId: string) {
-    this.setId = setId;
-    this.index = id;
+    this.idSet = setId;
+    this.indexSet = id;
   }
 
   deleteCriterion(criterionSetId: string, criterionId: string, indexCriterionSet: string, indexCriterion: string) {
     this.httpService.deleteCriterionToCriterionSet(criterionSetId, criterionId)
       .subscribe(
         (data) => {
-          console.log(data);
           this.criterionsSets[indexCriterionSet].criterions.splice(indexCriterion, 1);
         },
         error => {
@@ -291,7 +302,6 @@ export class SetsPageComponent implements OnInit {
     this.httpService.deleteAlternativeToAlternativeSet(alternativeSetId, alternativeId)
       .subscribe(
         (data) => {
-          console.log(data);
           this.alternativesSets[indexAlternativeSet].alternatives.splice(indexAlternative, 1);
         },
         error => {
@@ -304,7 +314,6 @@ export class SetsPageComponent implements OnInit {
     this.httpService.deleteExpertFromCriterionSet(criterionSetId, expertId)
       .subscribe(
         (data) => {
-          console.log(data);
           this.criterionsSets[indexCriterionSet].experts.splice(indexExpert, 1);
         },
         error => {
@@ -317,7 +326,6 @@ export class SetsPageComponent implements OnInit {
     this.httpService.deleteExpertFromAlternativesSet(alternativesSetId, expertId)
       .subscribe(
         (data) => {
-          console.log(data);
           this.alternativesSets[indexAlternativesSet].experts.splice(indexExpert, 1);
         },
         error => {
