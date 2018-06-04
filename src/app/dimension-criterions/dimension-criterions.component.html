@@ -1,11 +1,9 @@
 <div class="container">
   <div class="row">
-    <div class="col-md-12">
-
-      <div class="page-header">
-        <h2>Оценка критериев</h2>
-      </div>
-
+    <div class="page-header">
+      <h2>Оценка критериев</h2>
+    </div>
+    <div *ngIf="flagButtonsCriterions">
       <div class="row">
         <div class="col-md-6">
           <h4 style="margin-top:0">Критерий 1</h4>
@@ -25,11 +23,10 @@
 
       <div class="row">
         <div class="col-md-1">
-
           <div class="radio name-radio">
             <h4>-8</h4>
             <label>
-              <input #r1 type="radio" name="r" (change)="logRadio(r1)" value="0.11">
+              <input #r1 type="radio" name="r" (change)="setRadioFromButtonsView(r1)" value="0.11">
             </label>
           </div>
         </div>
@@ -37,7 +34,7 @@
           <div class="radio name-radio">
             <h4>-6</h4>
             <label>
-              <input #r2 type="radio" name="r" (change)="logRadio(r2)" value="0.33">
+              <input #r2 type="radio" name="r" (change)="setRadioFromButtonsView(r2)" value="0.33">
             </label>
           </div>
         </div>
@@ -45,7 +42,7 @@
           <div class="radio name-radio">
             <h4>-4</h4>
             <label>
-              <input #r3 type="radio" name="r" (change)="logRadio(r3)" value="0.55">
+              <input #r3 type="radio" name="r" (change)="setRadioFromButtonsView(r3)" value="0.55">
             </label>
           </div>
         </div>
@@ -53,7 +50,7 @@
           <div class="radio name-radio">
             <h4>-2</h4>
             <label>
-              <input #r4 type="radio" name="r" (change)="logRadio(r4)" value="0.77">
+              <input #r4 type="radio" name="r" (change)="setRadioFromButtonsView(r4)" value="0.77">
             </label>
           </div>
         </div>
@@ -61,7 +58,7 @@
           <div class="radio name-radio">
             <h4>0</h4>
             <label>
-              <input #r5 type="radio" name="r" (change)="logRadio(r5)" value="1" checked>
+              <input #r5 type="radio" name="r" (change)="setRadioFromButtonsView(r5)" value="1" checked>
             </label>
           </div>
         </div>
@@ -69,7 +66,7 @@
           <div class="radio name-radio">
             <h4>2</h4>
             <label>
-              <input #r6 type="radio" name="r" (change)="logRadio(r6)" value="1.285">
+              <input #r6 type="radio" name="r" (change)="setRadioFromButtonsView(r6)" value="1.285">
             </label>
           </div>
         </div>
@@ -77,7 +74,7 @@
           <div class="radio name-radio">
             <h4>4</h4>
             <label>
-              <input #r7 type="radio" name="r" (change)="logRadio(r7)" value="1.8">
+              <input #r7 type="radio" name="r" (change)="setRadioFromButtonsView(r7)" value="1.8">
             </label>
           </div>
         </div>
@@ -85,7 +82,7 @@
           <div class="radio name-radio">
             <h4>6</h4>
             <label>
-              <input #r8 type="radio" name="r" (change)="logRadio(r8)" value="3">
+              <input #r8 type="radio" name="r" (change)="setRadioFromButtonsView(r8)" value="3">
             </label>
           </div>
         </div>
@@ -93,22 +90,89 @@
           <div class="radio name-radio">
             <h4>8</h4>
             <label>
-              <input #r9 type="radio" name="r" (change)="logRadio(r9)" value="9">
+              <input #r9 type="radio" name="r" (change)="setRadioFromButtonsView(r9)" value="9">
             </label>
           </div>
         </div>
       </div>
+      <div class="row">
+        <div class="col-md-1">
+          <button class="btn btn-primary" (click)="lastCriterion()">Назад</button>
+        </div>
+        <div class="col-md-1">
+          <button class="btn btn-primary" (click)="nextCriterion()">Далее</button>
+        </div>
+        <div class="col-md-1">
+          <button class="btn btn-primary" (click)="dimension()" [hidden]="disableDimensionButton">Оценить критерии
+          </button>
+        </div>
+      </div>
     </div>
 
-    <div class="row">
-      <div class="col-md-1">
-        <button class="btn btn-primary" (click)="lastCriterion()">Назад</button>
+    <div *ngIf="flagRadioCriterions">
+      <div class="panel panel-default">
+        <table class="table table-hover">
+          <tr class="active">
+            <th>Имя критерия 1</th>
+            <th>-8</th>
+            <th>-6</th>
+            <th>-4</th>
+            <th>-2</th>
+            <th>0</th>
+            <th>2</th>
+            <th>4</th>
+            <th>6</th>
+            <th>8</th>
+            <th>Имя критерия 2</th>
+          </tr>
+
+          <tr *ngFor="let i of indexOne; let j = index">
+            <td>{{matrixCriterions[i].criterionName}}</td>
+            <td><input #r1 type="radio" name="{{j}}" (change)="logRadio(r1, i, j)" value="0.11"></td>
+            <td><input #r2 type="radio" name="{{j}}" (change)="logRadio(r2, i, j)" value="0.33"></td>
+            <td><input #r3 type="radio" name="{{j}}" (change)="logRadio(r3, i, j)" value="0.55"></td>
+            <td><input #r4 type="radio" name="{{j}}" (change)="logRadio(r4, i, j)" value="0.77"></td>
+            <td><input #r5 type="radio" name="{{j}}" (change)="logRadio(r5, i, j)" value="1" checked></td>
+            <td><input #r6 type="radio" name="{{j}}" (change)="logRadio(r6, i, j)" value="1.285"></td>
+            <td><input #r7 type="radio" name="{{j}}" (change)="logRadio(r7, i, j)" value="1.8"></td>
+            <td><input #r8 type="radio" name="{{j}}" (change)="logRadio(r8, i, j)" value="3"></td>
+            <td><input #r9 type="radio" name="{{j}}" (change)="logRadio(r9, i, j)" value="9"></td>
+            <td>{{matrixCriterions[indexTwo[j]].criterionName}}</td>
+          </tr>
+        </table>
       </div>
-      <div class="col-md-1">
-        <button class="btn btn-primary" (click)="nextCriterion()">Далее</button>
+
+      <div class="row">
+        <div class="col-md-1">
+          <button class="btn btn-primary" (click)="dimension()" [hidden]="disableDimensionButton">Оценить критерии
+          </button>
+        </div>
       </div>
-      <div class="col-md-1">
-        <button class="btn btn-primary" (click)="dimension()" [hidden]="disableDimensionButton">Оценить критерии</button>
+    </div>
+
+    <div *ngIf="flagRangeCriterions">
+      <div class="panel panel-default">
+        <table class="table table-hover">
+          <tr class="active">
+            <th>Имя критерия 1</th>
+            <th></th>
+            <th>Имя критерия 2</th>
+          </tr>
+
+          <tr *ngFor="let i of indexOne; let j = index">
+            <td>{{matrixCriterions[i].criterionName}}</td>
+            <td><input type="range" id="range" min="-8" max="8" value="0" step="2"
+                       (input)="setRange(Transvalue.value, i, j)" #Transvalue></td>
+            <td>{{matrixCriterions[indexTwo[j]].criterionName}}</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="row">
+        <div class="col-md-1">
+          <button class="btn btn-primary" (click)="dimension()" [hidden]="disableDimensionButton">Оценить критерии
+          </button>
+        </div>
       </div>
     </div>
   </div>

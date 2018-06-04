@@ -10,6 +10,8 @@ export class DimensionService {
   private criterions: Criterion[] = [];
   private alternatives: Alternative[] = [];
   private dimensionCriterions: CriterionDimension[] = [];
+  evaluateCriterionsMethod: string;
+  evaluateAlternativesMethod: string;
 
   setDimension(dimension: Dimension) {
     this.dimension = dimension;

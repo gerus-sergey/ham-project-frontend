@@ -23,6 +23,12 @@ export class DimensionCriterionsComponent implements OnInit {
   weightCriterion = [];
   first: number = 0; //счётчик первого критерия при выводе
   second: number = 1;  //счётчик второго критерия при выводе
+  indexOne = [];
+  indexTwo = [];
+
+  flagButtonsCriterions: boolean = false;
+  flagRadioCriterions: boolean = false;
+  flagRangeCriterions: boolean = false;
 
   constructor(private httpService: HttpService,
               private dimensionService: DimensionService,
@@ -30,8 +36,18 @@ export class DimensionCriterionsComponent implements OnInit {
   }
 
   ngOnInit() {
+    if(this.dimensionService.evaluateCriterionsMethod == "buttons") this.flagButtonsCriterions = true;
+    if(this.dimensionService.evaluateCriterionsMethod == "radio") this.flagRadioCriterions = true;
+    if(this.dimensionService.evaluateCriterionsMethod == "range") this.flagRangeCriterions = true;
     this.matrixCriterions = this.dimensionService.getCriterions();
+
+    // this.matrixCriterions.push(new Criterion("1", "name1", "qwe"));
+    // this.matrixCriterions.push(new Criterion("2", "name2", "qwe"));
+    // this.matrixCriterions.push(new Criterion("3", "name3", "qwe"));
+    // this.matrixCriterions.push(new Criterion("4", "name4", "qwe"));
+
     this.dimensionId = this.dimensionService.getDimension().id;
+    // this.dimensionId = "12";
     console.log(this.matrixCriterions);
 
     this.firstCriterion = this.matrixCriterions[0];
@@ -44,17 +60,60 @@ export class DimensionCriterionsComponent implements OnInit {
 
     for (let i = 0; i < this.matrixCriterions.length; i++) {
       for (let j = 0; j < this.matrixCriterions.length; j++) {
-
-        if (i == j) {  // единицы на главной диагонали
-          this.weightCriterion[i][j] = 1;
+        if (i != j) {
+          this.indexOne.push(i);
+          this.indexTwo.push(j);
         }
+        this.weightCriterion[i][j] = 1;
       }
     }
+    console.log(this.indexOne);
+    console.log(this.indexTwo);
+  }
+
+  setRadioFromButtonsView(element: HTMLInputElement){
+    this.radioValue = element.value;
+  }
+
+  logRadio(element: HTMLInputElement, indexOne: number, indexTwo: number): void {
+    this.weightCriterion[indexOne][this.indexTwo[indexTwo]] = parseFloat(element.value);
     console.log(this.weightCriterion);
   }
 
-  logRadio(element: HTMLInputElement): void {
-    this.radioValue = element.value;
+  setRange(value:any, indexOne: number, indexTwo: number){
+    let weight;
+    console.log(value);
+    switch (parseInt(value)){
+      case -8:
+        weight = 0.11;
+        break;
+      case -6:
+        weight = 0.33;
+        break;
+      case -4:
+        weight = 0.55;
+        break;
+      case -2:
+        weight = 0.77;
+        break;
+      case 2:
+        weight = 1.285;
+        break;
+      case 4:
+        weight = 1.8;
+        break;
+      case 6:
+        weight = 3;
+        break;
+      case 8:
+        weight = 9;
+        break;
+      default:
+        weight = 1;
+        break;
+    }
+      this.weightCriterion[indexOne][this.indexTwo[indexTwo]] = parseFloat(weight);
+      console.log(this.weightCriterion);
   }
 
   nextCriterion() {
@@ -78,7 +137,7 @@ export class DimensionCriterionsComponent implements OnInit {
       this.firstCriterion = this.matrixCriterions[this.first];
       this.secondCriterion = this.matrixCriterions[this.second];
     }
-    // console.log(this.weightCriterion);
+    console.log(this.weightCriterion);
     // console.log(this.first + " " + this.second);
   }
 
@@ -115,7 +174,7 @@ export class DimensionCriterionsComponent implements OnInit {
           this.route.navigateByUrl("/dimension-alternative");
         },
         error => {
-          if(error.status == 409) alert("Матрица не согласована");
+          if (error.status == 409) alert("Матрица не согласована");
           console.log(error);
         }
       );

@@ -52,6 +52,52 @@
                     Создать список критериев
                   </label>
                 </div>
+
+                <h4 style="margin-top: 20px">Настройка способа оценки</h4>
+
+                <!--<div class="row">-->
+                  <!--<div class="col-xs-6 col-md-4">-->
+                    <!--<a class="thumbnail"(click)="chooseDimensionCriterionsMethod('buttons')">-->
+                      <!--<img src="assets/img/test.png" alt="Radio">-->
+                    <!--</a>-->
+                  <!--</div>-->
+
+                  <!--<div class="col-xs-6 col-md-4">-->
+                    <!--<a class="thumbnail" (click)="chooseDimensionCriterionsMethod('radio')">-->
+                      <!--<img src="assets/img/user.png" alt="...">-->
+                    <!--</a>-->
+                  <!--</div>-->
+
+                  <!--<div class="col-xs-6 col-md-4">-->
+                    <!--<a class="thumbnail" (click)="chooseDimensionCriterionsMethod('range')">-->
+                      <!--<img src="assets/img/user.png" alt="...">-->
+                    <!--</a>-->
+                  <!--</div>-->
+                <!--</div>-->
+
+                <div class="radio">
+                  <label>
+                    <input type="radio" #cb13 name="evaluateCriterionsMethod" value="buttons" checked
+                           (change)="chooseCriterionsMethod(cb13)">
+                    Кнопки
+                  </label>
+                </div>
+
+                <div class="radio">
+                  <label>
+                    <input type="radio" #cb14 name="evaluateCriterionsMethod" value="radio"
+                           (change)="chooseCriterionsMethod(cb14)">
+                    Радиокнопки
+                  </label>
+                </div>
+
+                <div class="radio">
+                  <label>
+                    <input type="radio" #cb15 name="evaluateCriterionsMethod" value="range"
+                           (change)="chooseCriterionsMethod(cb15)">
+                    Ползунок
+                  </label>
+                </div>
               </div>
             </div>
           </div>
@@ -72,6 +118,51 @@
                     <input type="radio" #cb4 name="optionsRadiosTwo" value="createAlternativeSet"
                            (change)="chooseAlternativeOption(cb4)">
                     Создать список альтернатив
+                  </label>
+                </div>
+                <h4 style="margin-top: 20px">Настройка способа оценки</h4>
+
+                <!--<div class="row">-->
+                  <!--<div class="col-xs-6 col-md-4">-->
+                    <!--<a class="thumbnail">-->
+                      <!--<img src="assets/img/user.png" alt="Radio">-->
+                    <!--</a>-->
+                  <!--</div>-->
+
+                  <!--<div class="col-xs-6 col-md-4">-->
+                    <!--<a class="thumbnail"  (click)="chooseDimensionCriterionsMethod()">-->
+                      <!--<img src="assets/img/user.png" alt="...">-->
+                    <!--</a>-->
+                  <!--</div>-->
+
+                  <!--<div class="col-xs-6 col-md-4">-->
+                    <!--<a class="thumbnail">-->
+                      <!--<img src="assets/img/user.png" alt="...">-->
+                    <!--</a>-->
+                  <!--</div>-->
+                <!--</div>-->
+
+                <div class="radio">
+                  <label>
+                    <input type="radio" #cb10 name="evaluateAlternativesMethod" value="buttons" checked
+                           (change)="chooseAlternativesMethod(cb10)">
+                    Кнопки
+                  </label>
+                </div>
+
+                <div class="radio">
+                  <label>
+                    <input type="radio" #cb11 name="evaluateAlternativesMethod" value="radio"
+                           (change)="chooseAlternativesMethod(cb11)">
+                    Радиокнопки
+                  </label>
+                </div>
+
+                <div class="radio">
+                  <label>
+                    <input type="radio" #cb12 name="evaluateAlternativesMethod" value="range"
+                           (change)="chooseAlternativesMethod(cb12)">
+                    Ползунок
                   </label>
                 </div>
               </div>
@@ -244,7 +335,7 @@
                                   </table>
                                 </div>
                                 <h4>Описание набора:</h4>
-                                <h4>{{criterionsSet?.comment}}</h4>
+                                <h5>{{criterionsSet?.comment}}</h5>
                               </div>
                             </div>
                           </div>
@@ -423,7 +514,7 @@
                                   </table>
                                 </div>
                                 <h4>Описание набора:</h4>
-                                <h4>{{alternativesSet?.comment}}</h4>
+                                <h5>{{alternativesSet?.comment}}</h5>
                               </div>
                             </div>
                           </div>

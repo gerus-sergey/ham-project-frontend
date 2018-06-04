@@ -1,11 +1,12 @@
 <div class="container">
   <div class="row">
-    <div class="col-md-12">
+
 
       <div class="page-header">
         <h2>Оценка альтернатив</h2>
       </div>
 
+    <div *ngIf="flagButtons">
       <div class="row">
         <div class="col-md-6">
           <h4 style="margin-top:0">Альтернатива</h4>
@@ -98,7 +99,7 @@
           </div>
         </div>
       </div>
-    </div>
+
 
     <div class="row">
       <div class="col-md-1">
@@ -109,6 +110,72 @@
       </div>
       <div class="col-md-1">
         <button class="btn btn-primary" (click)="dimension()" [hidden]="disableDimensionButton">Оценить альтернативы</button>
+      </div>
+    </div>
+    </div>
+
+    <div *ngIf="flagRadio">
+      <div class="panel panel-default">
+        <table class="table table-hover">
+          <tr class="active">
+            <th>Имя альтернативы</th>
+            <th>-8</th>
+            <th>-6</th>
+            <th>-4</th>
+            <th>-2</th>
+            <th>0</th>
+            <th>2</th>
+            <th>4</th>
+            <th>6</th>
+            <th>8</th>
+            <th>Имя критерия</th>
+          </tr>
+
+          <tr *ngFor="let i of indexOne; let j = index">
+            <td>{{matrixAlternatives[i].alternativeName}}</td>
+            <td><input #r1 type="radio" name="{{j}}" (change)="setRadio(r1, i, j)" value="0.11"></td>
+            <td><input #r2 type="radio" name="{{j}}" (change)="setRadio(r2, i, j)" value="0.33"></td>
+            <td><input #r3 type="radio" name="{{j}}" (change)="setRadio(r3, i, j)" value="0.55"></td>
+            <td><input #r4 type="radio" name="{{j}}" (change)="setRadio(r4, i, j)" value="0.77"></td>
+            <td><input #r5 type="radio" name="{{j}}" (change)="setRadio(r5, i, j)" value="1" checked></td>
+            <td><input #r6 type="radio" name="{{j}}" (change)="setRadio(r6, i, j)" value="1.285"></td>
+            <td><input #r7 type="radio" name="{{j}}" (change)="setRadio(r7, i, j)" value="1.8"></td>
+            <td><input #r8 type="radio" name="{{j}}" (change)="setRadio(r8, i, j)" value="3"></td>
+            <td><input #r9 type="radio" name="{{j}}" (change)="setRadio(r9, i, j)" value="9"></td>
+            <td>{{dimensionCriterions[indexTwo[j]].criterion.criterionName}}</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="row">
+        <div class="col-md-1">
+          <button class="btn btn-primary" (click)="dimension()" [hidden]="disableDimensionButton">Оценить альтернативы</button>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="flagRange">
+      <div class="panel panel-default">
+        <table class="table table-hover">
+          <tr class="active">
+            <th>Имя альтернативы</th>
+            <th></th>
+            <th>Имя критерия</th>
+          </tr>
+
+          <tr *ngFor="let i of indexOne; let j = index">
+            <td>{{matrixAlternatives[i].alternativeName}}</td>
+            <td><input type="range" id="range" min="-8" max="8" value="0" step="2"
+                       (input)="setRange(Transvalue.value, i, j)" #Transvalue></td>
+            <td>{{dimensionCriterions[indexTwo[j]].criterion.criterionName}}</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="row">
+        <div class="col-md-1">
+          <button class="btn btn-primary" (click)="dimension()" [hidden]="disableDimensionButton">Оценить альтернативы</button>
+        </div>
       </div>
     </div>
   </div>

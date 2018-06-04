@@ -27,19 +27,25 @@ export class DimensionAlternativesComponent implements OnInit {
   first: number = 0;
   second: number = 0;
 
+  flagButtons: boolean = false;
+  flagRadio: boolean = false;
+  flagRange: boolean = false;
+  indexOne = [];
+  indexTwo = [];
+
   constructor(private httpService: HttpService,
               private dimensionService: DimensionService,
               private route: Router) {
   }
 
   ngOnInit() {
+    if(this.dimensionService.evaluateAlternativesMethod == "buttons") this.flagButtons = true;
+    if(this.dimensionService.evaluateAlternativesMethod == "radio") this.flagRadio = true;
+    if(this.dimensionService.evaluateAlternativesMethod == "range") this.flagRange = true;
+
     this.matrixAlternatives = this.dimensionService.getAlternatives();
     this.dimensionCriterions = this.dimensionService.getDimensionCriterions();
     this.dimensionId = this.dimensionService.getDimension().id;
-
-
-    console.log(this.matrixAlternatives);
-    console.log(this.dimensionCriterions.length);
 
     this.alternative = this.matrixAlternatives[0];
     this.criterion = this.dimensionCriterions[0].criterion;
@@ -50,8 +56,13 @@ export class DimensionAlternativesComponent implements OnInit {
       this.weightAlterntives[i] = new Array(this.dimensionCriterions.length);
     }
 
-
-    console.log(this.weightAlterntives);
+    for (let i = 0; i < this.weightAlterntives.length; i++) {
+      for (let j = 0; j < this.weightAlterntives[0].length; j++) {
+          this.weightAlterntives[i][j] = 1;
+          this.indexOne.push(i);
+          this.indexTwo.push(j);
+      }
+    }
   }
 
   logRadio(element: HTMLInputElement): void {
@@ -93,19 +104,57 @@ export class DimensionAlternativesComponent implements OnInit {
     }
   }
 
+  setRadio(element: HTMLInputElement, indexOne: number, indexTwo: number): void {
+    this.weightAlterntives[indexOne][this.indexTwo[indexTwo]] = parseFloat(element.value);
+    console.log(this.weightAlterntives);
+  }
+
+  setRange(value:any, indexOne: number, indexTwo: number){
+    let weight;
+    console.log(value);
+    switch (parseInt(value)){
+      case -8:
+        weight = 0.11;
+        break;
+      case -6:
+        weight = 0.33;
+        break;
+      case -4:
+        weight = 0.55;
+        break;
+      case -2:
+        weight = 0.77;
+        break;
+      case 2:
+        weight = 1.285;
+        break;
+      case 4:
+        weight = 1.8;
+        break;
+      case 6:
+        weight = 3;
+        break;
+      case 8:
+        weight = 9;
+        break;
+      default:
+        weight = 1;
+        break;
+    }
+    this.weightAlterntives[indexOne][this.indexTwo[indexTwo]] = parseFloat(weight);
+    console.log(this.weightAlterntives);
+  }
+
   dimension() {
     for (let i in this.matrixAlternatives) {
       let a = this.weightAlterntives[i];
-      this.dimensionAlternatives.push(new AlternativeDimension(
-        "", this.dimensionId, this.matrixAlternatives[i], "", a.toString()));
+      this.dimensionAlternatives[i] = new AlternativeDimension(
+        "", this.dimensionId, this.matrixAlternatives[i], "", a.toString());
     }
-
-    console.log(this.dimensionAlternatives);
 
     this.httpService.addDimensionAlternatives(this.dimensionId, this.dimensionAlternatives)
       .subscribe(
         (data: AlternativeDimension[]) => {
-          console.log(data)
           this.route.navigateByUrl("/dimension-result/" + this.dimensionId);
         },
         error => {

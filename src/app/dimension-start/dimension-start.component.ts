@@ -30,6 +30,8 @@ export class DimensionStartComponent implements OnInit {
 
   nameCriterionOption: string = "chooseCriterionSet";
   nameAlternativeOption: string = "chooseAlternativeSet";
+  evaluateCriterionsMethod: string = "buttons";
+  evaluateAlternativesMethod: string = "buttons";
 
   visibleCreateCriterionSet: boolean = false;
   visibleChooseCriterionSet: boolean = false;
@@ -80,7 +82,6 @@ export class DimensionStartComponent implements OnInit {
                     criterionSet.criterions.push(data[index]);
                   }
                   this.criterionsSets.push(criterionSet);
-                  console.log(this.criterionsSets)
                 },
                 error => {
                   console.log(error);
@@ -107,7 +108,6 @@ export class DimensionStartComponent implements OnInit {
                     alternativeSet.alternatives.push(data[index]);
                   }
                   this.alternativesSets.push(alternativeSet);
-                  console.log(this.alternativesSets)
                 },
                 error => {
                   console.log(error);
@@ -142,11 +142,18 @@ export class DimensionStartComponent implements OnInit {
 
   chooseCriterionOption(element: HTMLInputElement): void {
     this.nameCriterionOption = element.value;
-    console.log(element.value);
   }
 
   chooseAlternativeOption(element: HTMLInputElement): void {
     this.nameAlternativeOption = element.value;
+  }
+
+  chooseCriterionsMethod(element: HTMLInputElement){
+    this.evaluateCriterionsMethod = element.value;
+  }
+
+  chooseAlternativesMethod(element: HTMLInputElement){
+    this.evaluateAlternativesMethod = element.value;
   }
 
   chooseCriterionsSet(criterionsSetId: string) {
@@ -172,13 +179,13 @@ export class DimensionStartComponent implements OnInit {
 
     this.flagSaveSettingsButton = true;
     this.flag = false;
+    this.dimensionService.evaluateCriterionsMethod = this.evaluateCriterionsMethod;
+    this.dimensionService.evaluateAlternativesMethod = this.evaluateAlternativesMethod;
   }
 
   addCriterionFromDB(element: HTMLInputElement): void {
     this.criterionsResult.push(this.criterions[element.value]);
     this.criterions.splice(parseInt(element.value), 1);
-
-    console.log(this.criterionsResult);
   }
 
   addNewCriterion(model: Criterion, isValid: boolean) {
@@ -196,8 +203,6 @@ export class DimensionStartComponent implements OnInit {
   addAlternativeFromDB(element: HTMLInputElement): void {
     this.alternativesResult.push(this.alternatives[element.value]);
     this.alternatives.splice(parseInt(element.value), 1);
-
-    console.log(this.alternativesResult);
   }
 
   addNewAlternative(model: Alternative, isValid: boolean) {
@@ -213,7 +218,6 @@ export class DimensionStartComponent implements OnInit {
   }
 
   deleteCriterion(i: number) {
-    console.log(i);
     if (this.criterionsResult[i].id != null) {
       this.criterions.push(this.criterionsResult[i]);
       this.criterionsResult.splice(i, 1);
