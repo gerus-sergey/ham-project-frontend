@@ -3,6 +3,7 @@
     <div class="page-header">
       <h2>Оценка критериев</h2>
     </div>
+
     <div *ngIf="flagButtonsCriterions">
       <div class="row">
         <div class="col-md-6">
@@ -128,15 +129,15 @@
 
           <tr *ngFor="let i of indexOne; let j = index">
             <td>{{matrixCriterions[i].criterionName}}</td>
-            <td><input #r1 type="radio" name="{{j}}" (change)="logRadio(r1, i, j)" value="0.11"></td>
-            <td><input #r2 type="radio" name="{{j}}" (change)="logRadio(r2, i, j)" value="0.33"></td>
-            <td><input #r3 type="radio" name="{{j}}" (change)="logRadio(r3, i, j)" value="0.55"></td>
-            <td><input #r4 type="radio" name="{{j}}" (change)="logRadio(r4, i, j)" value="0.77"></td>
-            <td><input #r5 type="radio" name="{{j}}" (change)="logRadio(r5, i, j)" value="1" checked></td>
-            <td><input #r6 type="radio" name="{{j}}" (change)="logRadio(r6, i, j)" value="1.285"></td>
-            <td><input #r7 type="radio" name="{{j}}" (change)="logRadio(r7, i, j)" value="1.8"></td>
-            <td><input #r8 type="radio" name="{{j}}" (change)="logRadio(r8, i, j)" value="3"></td>
-            <td><input #r9 type="radio" name="{{j}}" (change)="logRadio(r9, i, j)" value="9"></td>
+            <td><input #r1 type="radio" name="{{j}}" (change)="setRadio(r1, i, j)" value="0.11"></td>
+            <td><input #r2 type="radio" name="{{j}}" (change)="setRadio(r2, i, j)" value="0.33"></td>
+            <td><input #r3 type="radio" name="{{j}}" (change)="setRadio(r3, i, j)" value="0.55"></td>
+            <td><input #r4 type="radio" name="{{j}}" (change)="setRadio(r4, i, j)" value="0.77"></td>
+            <td><input #r5 type="radio" name="{{j}}" (change)="setRadio(r5, i, j)" value="1" checked></td>
+            <td><input #r6 type="radio" name="{{j}}" (change)="setRadio(r6, i, j)" value="1.285"></td>
+            <td><input #r7 type="radio" name="{{j}}" (change)="setRadio(r7, i, j)" value="1.8"></td>
+            <td><input #r8 type="radio" name="{{j}}" (change)="setRadio(r8, i, j)" value="3"></td>
+            <td><input #r9 type="radio" name="{{j}}" (change)="setRadio(r9, i, j)" value="9"></td>
             <td>{{matrixCriterions[indexTwo[j]].criterionName}}</td>
           </tr>
         </table>
@@ -156,12 +157,15 @@
           <tr class="active">
             <th>Имя критерия 1</th>
             <th></th>
+            <th></th>
             <th>Имя критерия 2</th>
           </tr>
 
           <tr *ngFor="let i of indexOne; let j = index">
             <td>{{matrixCriterions[i].criterionName}}</td>
-            <td><input type="range" id="range" min="-8" max="8" value="0" step="2"
+            <td>{{rangeValue[j]}}</td>
+            <td>
+              <input type="range" id="range" min="-8" max="8" value="0" step="2"
                        (input)="setRange(Transvalue.value, i, j)" #Transvalue></td>
             <td>{{matrixCriterions[indexTwo[j]].criterionName}}</td>
           </tr>
@@ -172,6 +176,27 @@
         <div class="col-md-1">
           <button class="btn btn-primary" (click)="dimension()" [hidden]="disableDimensionButton">Оценить критерии
           </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modalConsistency" tabindex="-1" role="dialog">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+            </button>
+            <h4 class="modal-title">Внимание</h4>
+          </div>
+
+          <div class="modal-body">
+            <p>Матрица оценки критериев не согласована! Коэффициент согласованности = {{consistency | number : '1.2-2'}}</p>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Оценить заново</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal" (click)="dimensionWithoutConsistency()">Перейти к оценке альтернатив</button>
+          </div>
         </div>
       </div>
     </div>

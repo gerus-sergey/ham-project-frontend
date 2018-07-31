@@ -16,6 +16,7 @@ export class HttpService {
   }
 
   url: String = "http://localhost:8080";
+  // url: String = "";
 
   addOrUpdateUser(user: UserRegistered) {
     const headers = new HttpHeaders().set('Content-Type', 'application/json;charset=utf-8');
@@ -35,7 +36,8 @@ export class HttpService {
     });
   }
 
-  getExpert(expertId: String) {
+  getExpert(expertId: Number) {
+    console.log(this.url);
     return this.http.get(this.url + "/experts/" + expertId)
   }
 
@@ -43,7 +45,7 @@ export class HttpService {
     return this.http.get(this.url + "/experts")
   }
 
-  getDimensions(expertId: String) {
+  getDimensions(expertId: Number) {
     return this.http.get(this.url + "/dimensions/expert/" + expertId)
   }
 
@@ -80,9 +82,9 @@ export class HttpService {
     return this.http.delete(this.url + "/dimensions/" + dimensionId)
   }
 
-  addDimensionCriterions(dimensionId: String, dimensionCriterions: CriterionDimension[]){
+  addDimensionCriterions(dimensionId: String, isConsistency: boolean, dimensionCriterions: CriterionDimension[]){
     const headers = new HttpHeaders().set('Content-Type', 'application/json;charset=utf-8');
-    return this.http.post(this.url + '/rating-criterions/' + dimensionId, dimensionCriterions ,{
+    return this.http.post(this.url + '/rating-criterions/' + dimensionId + "/" + isConsistency, dimensionCriterions ,{
       headers: headers
     });
   }
@@ -102,7 +104,7 @@ export class HttpService {
     return this.http.get(this.url + "/alternatives-set");
   }
 
-  getCriterionsSetsByExpertId(expertId: String){
+  getCriterionsSetsByExpertId(expertId: Number){
     return this.http.get(this.url + "/expertsToCriterionSet/CriterionSetsByExpertId/" + expertId)
   }
 
@@ -110,7 +112,7 @@ export class HttpService {
     return this.http.get(this.url + "/criterionsToCriterionSet/criterionsByCriterionSetId/" + criterionSetId)
   }
 
-  getAlternativesSetsByExpertId(expertId: String){
+  getAlternativesSetsByExpertId(expertId: Number){
     return this.http.get(this.url + "/expertsToAlternativesSet/alternativesSetsByExpertId/" + expertId)
   }
 

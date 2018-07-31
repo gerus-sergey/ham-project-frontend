@@ -13,15 +13,17 @@
               <h4 class="profile-label">Название</h4>
               <div class="profile-input">
                 <input type="text" class="form-control" name="name" [(ngModel)]="dimension.name" placeholder="Название"
-                       ngModel
-                       #name="ngModel" minlength="2" maxlength="30" style="width: 400px;" required/>
+                       ngModel #name="ngModel" minlength="2" maxlength="30" style="width: 400px;" required/>
+                <small [hidden]="name.valid || (!f.submitted && name.untouched)">
+                  Название должно содержать минимум 2 символа
+                </small>
               </div>
             </div>
 
             <div class="form-group">
               <h4 class="profile-label">Комментарий</h4>
               <div class="profile-input">
-          <textarea required class="form-control" rows="7" maxlength="150" style="width: 400px; resize: none"
+          <textarea class="form-control" rows="7" maxlength="150" style="width: 400px; resize: none"
                     name="comment" placeholder="Комментарий" [(ngModel)]="dimension.comment">
           </textarea>
               </div>
@@ -36,13 +38,12 @@
           <div class="col-md-6" style="padding-right: 20px">
             <div class="panel panel-default">
               <div class="panel-body">
-                <h4 style="margin-bottom: 20px">Настройка оценки критериев</h4>
-
+                <h4>Источник критериев</h4>
                 <div class="radio">
                   <label>
                     <input type="radio" #cb1 name="optionsRadiosOne" value="chooseCriterionSet" checked
                            (change)="chooseCriterionOption(cb1)">
-                    Использовать существующий набор критериев
+                    Выбрать набор из существующих наборов критериев
                   </label>
                 </div>
                 <div class="radio">
@@ -53,27 +54,7 @@
                   </label>
                 </div>
 
-                <h4 style="margin-top: 20px">Настройка способа оценки</h4>
-
-                <!--<div class="row">-->
-                  <!--<div class="col-xs-6 col-md-4">-->
-                    <!--<a class="thumbnail"(click)="chooseDimensionCriterionsMethod('buttons')">-->
-                      <!--<img src="assets/img/test.png" alt="Radio">-->
-                    <!--</a>-->
-                  <!--</div>-->
-
-                  <!--<div class="col-xs-6 col-md-4">-->
-                    <!--<a class="thumbnail" (click)="chooseDimensionCriterionsMethod('radio')">-->
-                      <!--<img src="assets/img/user.png" alt="...">-->
-                    <!--</a>-->
-                  <!--</div>-->
-
-                  <!--<div class="col-xs-6 col-md-4">-->
-                    <!--<a class="thumbnail" (click)="chooseDimensionCriterionsMethod('range')">-->
-                      <!--<img src="assets/img/user.png" alt="...">-->
-                    <!--</a>-->
-                  <!--</div>-->
-                <!--</div>-->
+                <h4 style="margin-top: 20px">Настройка способа оценки критериев</h4>
 
                 <div class="radio">
                   <label>
@@ -95,7 +76,7 @@
                   <label>
                     <input type="radio" #cb15 name="evaluateCriterionsMethod" value="range"
                            (change)="chooseCriterionsMethod(cb15)">
-                    Ползунок
+                    Ползунки
                   </label>
                 </div>
               </div>
@@ -104,13 +85,13 @@
           <div class="col-md-6" style="padding-left: 25px">
             <div class="panel panel-default">
               <div class="panel-body">
-                <h4 style="margin-bottom: 20px">Настройка оценки альтернатив</h4>
+                <h4>Источник альтернатив</h4>
 
                 <div class="radio">
                   <label>
                     <input type="radio" #cb3 name="optionsRadiosTwo" value="chooseAlternativeSet" checked
                            (change)="chooseAlternativeOption(cb3)">
-                    Использовать существующий набор альтернатив
+                    Выбрать набор из существующих наборов альтернатив
                   </label>
                 </div>
                 <div class="radio">
@@ -120,27 +101,7 @@
                     Создать список альтернатив
                   </label>
                 </div>
-                <h4 style="margin-top: 20px">Настройка способа оценки</h4>
-
-                <!--<div class="row">-->
-                  <!--<div class="col-xs-6 col-md-4">-->
-                    <!--<a class="thumbnail">-->
-                      <!--<img src="assets/img/user.png" alt="Radio">-->
-                    <!--</a>-->
-                  <!--</div>-->
-
-                  <!--<div class="col-xs-6 col-md-4">-->
-                    <!--<a class="thumbnail"  (click)="chooseDimensionCriterionsMethod()">-->
-                      <!--<img src="assets/img/user.png" alt="...">-->
-                    <!--</a>-->
-                  <!--</div>-->
-
-                  <!--<div class="col-xs-6 col-md-4">-->
-                    <!--<a class="thumbnail">-->
-                      <!--<img src="assets/img/user.png" alt="...">-->
-                    <!--</a>-->
-                  <!--</div>-->
-                <!--</div>-->
+                <h4 style="margin-top: 20px">Настройка способа оценки альтернатив</h4>
 
                 <div class="radio">
                   <label>
@@ -162,7 +123,7 @@
                   <label>
                     <input type="radio" #cb12 name="evaluateAlternativesMethod" value="range"
                            (change)="chooseAlternativesMethod(cb12)">
-                    Ползунок
+                    Ползунки
                   </label>
                 </div>
               </div>
@@ -180,21 +141,17 @@
               <div class="panel-body">
                 <h4 style="margin-bottom: 20px">Список критериев</h4>
 
-                <div class="row">
-                  <div class="col-md-6">
-                    <!-- Триггер кнопка модали-->
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal1">
-                      Добавить новый
-                    </button>
-                  </div>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal1">
+                  Добавить новый
+                </button>
 
-                  <div class="col-md-6">
-                    <!-- Триггер кнопка модали-->
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-                      Добавить из наборов
-                    </button>
-                  </div>
-                </div>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                  Добавить из наборов
+                </button>
+
+                <button type="button" class="btn btn-primary">
+                  Сохранить
+                </button>
 
                 <div class="form-group" style="margin-top: 20px">
                   <div class="list-group" style="margin: 0 15px 0 15px">
@@ -368,21 +325,18 @@
               <div class="panel-body">
                 <h4 style="margin-bottom: 20px">Список альтернатив</h4>
 
-                <div class="row">
-                  <div class="col-md-6">
-                    <!-- Триггер кнопка модали-->
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal3">
-                      Добавить новую
-                    </button>
-                  </div>
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal3">
+                  Добавить новую
+                </button>
 
-                  <div class="col-md-6">
-                    <!-- Триггер кнопка модали-->
-                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal4">
-                      Добавить из наборов
-                    </button>
-                  </div>
-                </div>
+                <!-- Триггер кнопка модали-->
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal4">
+                  Добавить из наборов
+                </button>
+
+                <button type="button" class="btn btn-primary">
+                  Сохранить
+                </button>
 
                 <div class="form-group" style="margin-top: 20px">
                   <div class="list-group" style="margin:0 15px 0 15px">
@@ -542,13 +496,34 @@
             </div>
           </div>
 
-          <hr style="height: 2px; margin-top: 20px">
-
+          <hr style="height: 2px; margin-top: 10px">
           <div class="row">
             <div class="col-md-12" style="padding-top: 10px">
-              <button style="margin-left: 15px" [disabled]="flag" type="submit" class="btn btn-primary">Сохранить
-                изменения
+              <button style="margin-left: 15px" [disabled]="flag" type="submit" class="btn btn-primary">
+                Сохранить изменения
               </button>
+            </div>
+          </div>
+
+
+          <div class="modal fade" id="modalInfo" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span>
+                  </button>
+                  <h4 class="modal-title">Внимание</h4>
+                </div>
+
+                <div class="modal-body">
+                  <p>Список критериев или альтернатив пуст! Для продолжения оценки создайте список критериев
+                    и альтернтив.</p>
+                </div>
+
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                </div>
+              </div>
             </div>
           </div>
         </div>

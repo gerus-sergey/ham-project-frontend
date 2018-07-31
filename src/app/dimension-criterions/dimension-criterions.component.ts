@@ -5,6 +5,7 @@ import {DimensionService} from "../services/dimension.service";
 import {CriterionDimension} from "../models/criterion-dimension.interface";
 import {Router} from "@angular/router";
 
+declare var $: any;
 
 @Component({
   selector: 'app-dimension-criterions',
@@ -25,7 +26,10 @@ export class DimensionCriterionsComponent implements OnInit {
   second: number = 1;  //счётчик второго критерия при выводе
   indexOne = [];
   indexTwo = [];
+  rangeValue = [];
+  consistency: number = 0;
 
+  flagWrongConsistency: boolean = false;
   flagButtonsCriterions: boolean = false;
   flagRadioCriterions: boolean = false;
   flagRangeCriterions: boolean = false;
@@ -41,13 +45,7 @@ export class DimensionCriterionsComponent implements OnInit {
     if(this.dimensionService.evaluateCriterionsMethod == "range") this.flagRangeCriterions = true;
     this.matrixCriterions = this.dimensionService.getCriterions();
 
-    // this.matrixCriterions.push(new Criterion("1", "name1", "qwe"));
-    // this.matrixCriterions.push(new Criterion("2", "name2", "qwe"));
-    // this.matrixCriterions.push(new Criterion("3", "name3", "qwe"));
-    // this.matrixCriterions.push(new Criterion("4", "name4", "qwe"));
-
     this.dimensionId = this.dimensionService.getDimension().id;
-    // this.dimensionId = "12";
     console.log(this.matrixCriterions);
 
     this.firstCriterion = this.matrixCriterions[0];
@@ -63,6 +61,7 @@ export class DimensionCriterionsComponent implements OnInit {
         if (i != j) {
           this.indexOne.push(i);
           this.indexTwo.push(j);
+          this.rangeValue.push("0");
         }
         this.weightCriterion[i][j] = 1;
       }
@@ -75,7 +74,7 @@ export class DimensionCriterionsComponent implements OnInit {
     this.radioValue = element.value;
   }
 
-  logRadio(element: HTMLInputElement, indexOne: number, indexTwo: number): void {
+  setRadio(element: HTMLInputElement, indexOne: number, indexTwo: number): void {
     this.weightCriterion[indexOne][this.indexTwo[indexTwo]] = parseFloat(element.value);
     console.log(this.weightCriterion);
   }
@@ -112,8 +111,9 @@ export class DimensionCriterionsComponent implements OnInit {
         weight = 1;
         break;
     }
-      this.weightCriterion[indexOne][this.indexTwo[indexTwo]] = parseFloat(weight);
-      console.log(this.weightCriterion);
+    this.rangeValue[indexTwo] = value;
+    this.weightCriterion[indexOne][this.indexTwo[indexTwo]] = parseFloat(weight);
+    console.log(this.rangeValue);
   }
 
   nextCriterion() {
@@ -138,7 +138,6 @@ export class DimensionCriterionsComponent implements OnInit {
       this.secondCriterion = this.matrixCriterions[this.second];
     }
     console.log(this.weightCriterion);
-    // console.log(this.first + " " + this.second);
   }
 
   lastCriterion() {
@@ -157,8 +156,6 @@ export class DimensionCriterionsComponent implements OnInit {
       this.firstCriterion = this.matrixCriterions[this.first];
       this.secondCriterion = this.matrixCriterions[this.second];
     }
-    // console.log(this.weightCriterion);
-    // console.log(this.first + " " + this.second);
   }
 
   dimension() {
@@ -167,16 +164,40 @@ export class DimensionCriterionsComponent implements OnInit {
       this.dimensionCriterions[i] = new CriterionDimension("", this.dimensionId, this.matrixCriterions[i], "", a.toString());
     }
 
-    this.httpService.addDimensionCriterions(this.dimensionId, this.dimensionCriterions)
+    this.httpService.addDimensionCriterions(this.dimensionId, true, this.dimensionCriterions)
       .subscribe(
         (data: CriterionDimension[]) => {
           this.dimensionService.setDimensionCriterions(data);
           this.route.navigateByUrl("/dimension-alternative");
         },
         error => {
-          if (error.status == 409) alert("Матрица не согласована");
+          if (error.status == 409){
+            this.consistency = error.error;
+            this.flagWrongConsistency = true;
+            $("#modalConsistency").modal('show');
+          }
           console.log(error);
         }
       );
   }
+
+  dimensionWithoutConsistency(){
+    for (let i in this.matrixCriterions) {
+      let a = this.weightCriterion[i];
+      this.dimensionCriterions[i] = new CriterionDimension("", this.dimensionId, this.matrixCriterions[i], "", a.toString());
+    }
+
+    this.httpService.addDimensionCriterions(this.dimensionId, false, this.dimensionCriterions)
+      .subscribe(
+        (data: CriterionDimension[]) => {
+          this.dimensionService.setDimensionCriterions(data);
+          this.route.navigateByUrl("/dimension-alternative");
+        },
+        error => {
+          console.log(error);
+        }
+      );
+  }
+
+  closeWindow(){this.flagWrongConsistency = false}
 }

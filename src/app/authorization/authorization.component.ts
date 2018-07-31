@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {HttpService} from "../services/http.service";
 import {UserRegistered} from "../models/user-registered.interface";
 import {Router} from "@angular/router";
+import {MainService} from "../services/main.service";
 
 export class UserSignIn {
   email: string;
@@ -11,8 +12,7 @@ export class UserSignIn {
 @Component({
   selector: 'app-authorization',
   templateUrl: './authorization.component.html',
-  styleUrls: ['./authorization.component.css'],
-  providers: [HttpService]
+  styleUrls: ['./authorization.component.css']
 })
 
 export class AuthorizationComponent implements OnInit {
@@ -22,7 +22,8 @@ export class AuthorizationComponent implements OnInit {
   done: boolean = true;
 
   constructor(private httpService: HttpService,
-              private route: Router) {
+              private route: Router,
+              private mainService: MainService) {
   }
 
   ngOnInit() {
@@ -41,6 +42,8 @@ export class AuthorizationComponent implements OnInit {
             this.receivedUser = data;
             this.route.navigateByUrl("/account");
             localStorage.setItem('id', this.receivedUser.id.toString());
+            this.mainService.setIsAuth(true);
+            localStorage.setItem('role', this.receivedUser.role.id.toString());
             console.log(localStorage.getItem('id'));
           },
           error => {

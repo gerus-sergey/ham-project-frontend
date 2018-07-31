@@ -32,6 +32,7 @@ export class DimensionAlternativesComponent implements OnInit {
   flagRange: boolean = false;
   indexOne = [];
   indexTwo = [];
+  rangeValue = [];
 
   constructor(private httpService: HttpService,
               private dimensionService: DimensionService,
@@ -61,6 +62,7 @@ export class DimensionAlternativesComponent implements OnInit {
           this.weightAlterntives[i][j] = 1;
           this.indexOne.push(i);
           this.indexTwo.push(j);
+          this.rangeValue.push("0");
       }
     }
   }
@@ -142,7 +144,8 @@ export class DimensionAlternativesComponent implements OnInit {
         break;
     }
     this.weightAlterntives[indexOne][this.indexTwo[indexTwo]] = parseFloat(weight);
-    console.log(this.weightAlterntives);
+    this.rangeValue[indexTwo] = value;
+    console.log(this.rangeValue);
   }
 
   dimension() {

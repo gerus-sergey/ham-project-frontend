@@ -3,17 +3,16 @@
     <form class="form-horizontal" #f="ngForm" novalidate (ngSubmit)="signIn(f.value, f.valid)">
       <div class="form-group">
         <input class="form-control form-input" name="email" type="email" placeholder="Email"
-               required [(ngModel)]="authorizationUser.email" #email="ngModel"
+               required [(ngModel)]="authorizationUser.email" #email="ngModel" maxlength="30"
                pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"/>
-        <small [hidden]="email.valid || (email.pristine && !f.submitted)">
+        <small [hidden]="email.valid || (email.untouched && !f.submitted)">
           Email должен соответствовать формату <i>john@doe.com</i>.
         </small>
       </div>
       <div class="form-group">
-        <input class="form-control form-input" name="password" type="password"
-               [ngModel]="authorizationUser.password" #password="ngModel" placeholder="Пароль"
-               required/>
-        <small [hidden]="password.valid || (password.pristine && !f.submitted)">
+        <input class="form-control form-input" name="password" type="password" maxlength="20"
+               [ngModel]="authorizationUser.password" #password="ngModel" placeholder="Пароль" required/>
+        <small [hidden]="password.valid || (password.untouched && !f.submitted)">
           Пароль должен быть больше 6 символов
         </small>
         <small [hidden]="done">

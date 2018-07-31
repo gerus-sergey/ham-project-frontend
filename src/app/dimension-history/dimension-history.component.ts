@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {Dimension} from "../models/dimension.interface";
 import {HttpService} from "../services/http.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-dimension-history',
@@ -9,15 +10,16 @@ import {HttpService} from "../services/http.service";
   providers: [HttpService]
 })
 export class DimensionHistoryComponent implements OnInit {
-
   public dimensions: Dimension[] = [];
-  public id: String;
+  private id: number;
 
-  constructor(private httpService: HttpService) {
+  constructor(private httpService: HttpService,
+              private route: Router) {
   }
 
   ngOnInit() {
-    this.id = localStorage.getItem('id');
+    this.id = parseInt(localStorage.getItem('id'));
+    if(this.id == null || isNaN(this.id)) this.route.navigateByUrl("/");
     this.httpService.getDimensions(this.id)
       .subscribe(
         (data: Dimension) => {

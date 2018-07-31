@@ -14,13 +14,14 @@ import { DimensionResultComponent } from './dimension-result/dimension-result.co
 import { DimensionHistoryComponent } from './dimension-history/dimension-history.component';
 import { DimensionStartComponent } from './dimension-start/dimension-start.component';
 import {DimensionService} from "./services/dimension.service";
-import {CheckBoxList} from "ng2-checkboxlist/checkboxlist";
 import { DimensionCriterionsComponent } from './dimension-criterions/dimension-criterions.component';
 import { HomePageComponent } from './home-page/home-page.component';
 import {HttpService} from "./services/http.service";
 import { ErrorPageComponent } from './error-page/error-page.component';
 import { DimensionAlternativesComponent } from './dimension-alternatives/dimension-alternatives.component';
 import { SetsPageComponent } from './sets-page/sets-page.component';
+import {MainService} from "./services/main.service";
+import {EqualValidator} from "./directives/equal-validator.directive";
 
 
 const appRoutes: Routes =[
@@ -48,12 +49,12 @@ const appRoutes: Routes =[
     DimensionResultComponent,
     DimensionHistoryComponent,
     DimensionStartComponent,
-    CheckBoxList,
     DimensionCriterionsComponent,
     HomePageComponent,
     ErrorPageComponent,
     DimensionAlternativesComponent,
-    SetsPageComponent
+    SetsPageComponent,
+    EqualValidator
   ],
   imports: [
     BrowserModule,
@@ -67,7 +68,7 @@ const appRoutes: Routes =[
     }),
     RouterModule.forRoot(appRoutes, {useHash: true})
   ],
-  providers: [DimensionService, HttpService],
+  providers: [DimensionService, HttpService, MainService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

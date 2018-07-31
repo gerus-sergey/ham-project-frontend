@@ -1,3 +1,5 @@
+import {Role} from "./role.interface";
+
 export class UserProfile {
   id: number;
   firstName: string;
@@ -6,9 +8,10 @@ export class UserProfile {
   email: string;
   password: string;
   position: string;
+  role: Role;
 
 
-  constructor(id: number, firstName: string, lastName: string, patronymic: string, email: string, password: string, position: string) {
+  constructor(id: number, firstName: string, lastName: string, patronymic: string, email: string, password: string, position: string, role: Role) {
     this.id = id;
     this.firstName = firstName;
     this.lastName = lastName;
@@ -16,5 +19,6 @@ export class UserProfile {
     this.email = email;
     this.password = password;
     this.position = position;
+    this.role = role;
   }
 }

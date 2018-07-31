@@ -160,11 +160,13 @@
           <tr class="active">
             <th>Имя альтернативы</th>
             <th></th>
+            <th></th>
             <th>Имя критерия</th>
           </tr>
 
           <tr *ngFor="let i of indexOne; let j = index">
             <td>{{matrixAlternatives[i].alternativeName}}</td>
+            <td>{{rangeValue[j]}}</td>
             <td><input type="range" id="range" min="-8" max="8" value="0" step="2"
                        (input)="setRange(Transvalue.value, i, j)" #Transvalue></td>
             <td>{{dimensionCriterions[indexTwo[j]].criterion.criterionName}}</td>

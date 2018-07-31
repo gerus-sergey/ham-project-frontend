@@ -8,13 +8,15 @@ import {Router} from "@angular/router";
 import {CriterionsSet} from "../models/criterions-set.interface";
 import {AlternativesSet} from "../models/alternatives-set.interface";
 
+declare var $: any;
+
 @Component({
   selector: 'app-dimension-start',
   templateUrl: './dimension-start.component.html',
   styleUrls: ['./dimension-start.component.css']
 })
 export class DimensionStartComponent implements OnInit {
-  public id: String;
+  private id: number;
   dimension: Dimension;
 
   criterionsSets: CriterionsSet[] = [];
@@ -48,7 +50,8 @@ export class DimensionStartComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.id = localStorage.getItem('id');
+    this.id = parseInt(localStorage.getItem('id'));
+    if (this.id == null || isNaN(this.id)) this.route.navigateByUrl("/");
     this.dimension = {
       id: '',
       expertId: '',
@@ -123,21 +126,26 @@ export class DimensionStartComponent implements OnInit {
   }
 
   addDimension(model: Dimension, isValid: boolean) {
+    if (isValid) {
+      if (this.alternativesResult.length == 0 || this.criterionsResult.length == 0) {
+        $("#modalInfo").modal('show');
+      } else {
+        this.dimension = new Dimension("", this.id.toString(), new Date(), model.name, model.comment);
 
-    this.dimension = new Dimension("", this.id.toString(), new Date(), model.name, model.comment);
-
-    this.httpService.addDimension(this.dimension)
-      .subscribe(
-        (data: Dimension) => {
-          this.dimensionService.setDimension(data);
-          this.dimensionService.setCriterions(this.criterionsResult);
-          this.dimensionService.setAlternatives(this.alternativesResult);
-          this.route.navigateByUrl("/dimension-criterion");
-        },
-        error => {
-          console.log(error);
-        }
-      );
+        this.httpService.addDimension(this.dimension)
+          .subscribe(
+            (data: Dimension) => {
+              this.dimensionService.setDimension(data);
+              this.dimensionService.setCriterions(this.criterionsResult);
+              this.dimensionService.setAlternatives(this.alternativesResult);
+              this.route.navigateByUrl("/dimension-criterion");
+            },
+            error => {
+              console.log(error);
+            }
+          );
+      }
+    }
   }
 
   chooseCriterionOption(element: HTMLInputElement): void {
@@ -148,11 +156,11 @@ export class DimensionStartComponent implements OnInit {
     this.nameAlternativeOption = element.value;
   }
 
-  chooseCriterionsMethod(element: HTMLInputElement){
+  chooseCriterionsMethod(element: HTMLInputElement) {
     this.evaluateCriterionsMethod = element.value;
   }
 
-  chooseAlternativesMethod(element: HTMLInputElement){
+  chooseAlternativesMethod(element: HTMLInputElement) {
     this.evaluateAlternativesMethod = element.value;
   }
 

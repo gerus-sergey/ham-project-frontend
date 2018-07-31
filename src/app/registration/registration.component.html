@@ -4,25 +4,23 @@
       <div class="form-group">
         <div style="float: left; margin:0 10px 0 0">
           <input class="form-control" name="lastName" [(ngModel)]="form.lastName" placeholder="Фамилия" ngModel
-                 #lastname="ngModel"
-                 minlength="2" maxlength="8" required/>
+                 #lastname="ngModel" minlength="2" maxlength="8" required/>
         </div>
         <div>
           <input class="form-control" name="firstName" [(ngModel)]="form.firstName" placeholder="Имя" ngModel
-                 #firstname="ngModel"
-                 minlength="2" maxlength="8" required/>
+                 #firstname="ngModel" minlength="2" maxlength="8" required/>
         </div>
         <small
-          [hidden]="(firstname.valid || (firstname.pristine && !f.submitted))&&(lastname.valid || (lastname.pristine && !f.submitted))">
+          [hidden]="(firstname.valid || (firstname.untouched && !f.submitted))&&(lastname.valid || (lastname.untouched && !f.submitted))">
           Фамилия или имя неверны (минимум 2 символа).
         </small>
       </div>
 
       <div class="form-group">
         <input class="form-control form-input" ngModel name="email" [(ngModel)]="form.email" type="email"
-               placeholder="Email" (change)="checkEmail(email.valid )"
+               placeholder="Email" (change)="checkEmail(email.valid )" required maxlength="30"
                #email="ngModel" pattern="^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$"/>
-        <small [hidden]="email.valid || (email.pristine && !f.submitted)">
+        <small [hidden]="email.valid || (email.untouched && !f.submitted)">
           Email должен соответствовать формату <i>john@doe.com</i>.
         </small>
         <small [hidden]="freeEmail">
@@ -32,20 +30,17 @@
 
       <div class="form-group">
         <input class="form-control form-input" minlength="6" ngModel name="password" [(ngModel)]="form.password"
-               type="password"
-               validateEqual="confirmPassword"
-               reverse="true" placeholder="Пароль" #password="ngModel"
-               required/>
-        <small [hidden]="password.valid || (password.pristine && !f.submitted)">
+               type="password" validateEqual="confirmPassword" reverse="true" placeholder="Пароль"
+               #password="ngModel" required maxlength="20"/>
+        <small [hidden]="password.valid || (password.untouched && !f.submitted)">
           Пароль должен быть больше 6 символов
         </small>
       </div>
 
       <div class="form-group">
         <input class="form-control form-input" ngModel name="confirmPassword" type="password" validateEqual="password"
-               placeholder="Повторите пароль" #confirmPassword="ngModel"
-               required/>
-        <small [hidden]="confirmPassword.valid ||  (confirmPassword.pristine && !f.submitted)">
+               placeholder="Повторите пароль" #confirmPassword="ngModel" maxlength="20" required/>
+        <small [hidden]="confirmPassword.valid ||  (confirmPassword.untouched && !f.submitted)">
           Пароли не совпадают
         </small>
       </div>

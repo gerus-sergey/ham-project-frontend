@@ -3,6 +3,8 @@ import {UserRegistered} from "../models/user-registered.interface";
 import {HttpService} from "../services/http.service";
 import {LocalStorageService} from "angular-2-local-storage";
 import {Router} from "@angular/router";
+import {Role} from "../models/role.interface";
+import {MainService} from "../services/main.service";
 
 export class Form {
   id: number;
@@ -28,7 +30,8 @@ export class RegistrationComponent implements OnInit {
 
   constructor(private httpService: HttpService,
               private localStorageService: LocalStorageService,
-              private route: Router) {
+              private route: Router,
+              private mainService: MainService) {
   }
 
   ngOnInit() {
@@ -55,7 +58,7 @@ export class RegistrationComponent implements OnInit {
 
   registeredUser(model: Form, isValid: boolean) {
     if (isValid) {
-      this.userRegistered = new UserRegistered(null, model.firstName, model.lastName, model.email, model.password);
+      this.userRegistered = new UserRegistered(null, model.firstName, model.lastName, model.email, model.password, new Role("2", "user"));
       this.httpService.addOrUpdateUser(this.userRegistered)
         .subscribe(
         (data: UserRegistered) => {
@@ -64,7 +67,7 @@ export class RegistrationComponent implements OnInit {
           this.route.navigateByUrl("/account");
           if (this.remember) {
             localStorage.setItem('id', this.receivedUser.id.toString());
-            console.log(localStorage.getItem("id"));
+            localStorage.setItem('role', this.receivedUser.role.id.toString());
           } else {
             localStorage.setItem('id', null);
           }

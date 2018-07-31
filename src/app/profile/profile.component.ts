@@ -1,6 +1,8 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {UserProfile} from "../models/user-profile.interface";
 import {HttpService} from "../services/http.service";
+import {Role} from "../models/role.interface";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-profile',
@@ -9,15 +11,18 @@ import {HttpService} from "../services/http.service";
   providers: [HttpService]
 })
 export class ProfileComponent implements OnInit {
+  private id: number;
   public userProfile: UserProfile;
   public updateProfile: UserProfile;
-  public id: String;
+  flagIsUpdated: boolean = false;
 
-  constructor(private httpService: HttpService) {
+  constructor(private httpService: HttpService,
+              private route: Router) {
   }
 
   ngOnInit() {
-    this.id = localStorage.getItem('id');
+    this.id = parseInt(localStorage.getItem('id'));
+    if (this.id == null || isNaN(this.id)) this.route.navigateByUrl("/");
     this.httpService.getExpert(this.id)
       .subscribe(
         (data: UserProfile) => {
@@ -31,16 +36,14 @@ export class ProfileComponent implements OnInit {
 
   updateUser(model: UserProfile, isValid: boolean) {
     this.updateProfile = new UserProfile(this.userProfile.id, model.firstName, model.lastName, model.patronymic,
-      this.userProfile.email, this.userProfile.password, model.position);
+      this.userProfile.email, this.userProfile.password, model.position, new Role("2", "user"));
     this.httpService.addOrUpdateUser(this.updateProfile)
       .subscribe(
         (data: UserProfile) => {
           this.userProfile = data;
-          console.log(this.userProfile);
+          this.flagIsUpdated = true;
         },
         error => console.log(error)
       );
-    console.log(this.updateProfile);
   }
-
 }

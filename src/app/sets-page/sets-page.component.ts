@@ -6,6 +6,7 @@ import {AlternativesSet} from "../models/alternatives-set.interface";
 import {Alternative} from "../models/alternative.interface";
 import {UserRegistered} from "../models/user-registered.interface";
 import {UserProfile} from "../models/user-profile.interface";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-sets-page',
@@ -15,19 +16,23 @@ import {UserProfile} from "../models/user-profile.interface";
 export class SetsPageComponent implements OnInit {
   criterionsSets: CriterionsSet[] = [];
   alternativesSets: AlternativesSet[] = [];
-
   newCriterionsSet: CriterionsSet;
   newAlternativesSet: AlternativesSet;
-  newCriterion: Criterion;
-  newAlternative: Alternative;
+  criterion: Criterion;
+  alternative: Alternative;
   experts: UserProfile[] = [];
   idSet: string;
   indexSet: string;
+  indexCritOrAlt: number;
+  private id: number;
 
-  constructor(private httpService: HttpService) {
+  constructor(private httpService: HttpService,
+              private route: Router) {
   }
 
   ngOnInit() {
+    this.id = parseInt(localStorage.getItem('id'));
+    if(this.id == null || isNaN(this.id)) this.route.navigateByUrl("/");
 
     this.newCriterionsSet = {
       id: '',
@@ -45,13 +50,13 @@ export class SetsPageComponent implements OnInit {
       experts: null,
     };
 
-    this.newCriterion = {
+    this.criterion = {
       id: '',
       criterionName: '',
       description: ''
     };
 
-    this.newAlternative = {
+    this.alternative = {
       id: '',
       alternativeName: ''
     };
@@ -241,14 +246,21 @@ export class SetsPageComponent implements OnInit {
     }
   }
 
-  addNewCriterion(model: Criterion, isValid: boolean) {
-    this.httpService.addCriterion(new Criterion(model.id, model.criterionName, model.description))
+  addOrUpdateCriterionInSet(model: Criterion, isValid: boolean) {
+    console.log(this.criterion);
+    this.httpService.addCriterion(new Criterion(this.criterion.id, model.criterionName, model.description))
       .subscribe(
         (criterion: Criterion) => {
           this.httpService.addCriterionToCriterionSet(criterion.id, this.idSet)
             .subscribe(
               (data) => {
-                this.criterionsSets[this.indexSet].criterions.push(criterion);
+                if (this.indexCritOrAlt != null) {
+                  this.criterionsSets[this.indexSet].criterions[this.indexCritOrAlt] = criterion;
+                  this.indexCritOrAlt = null;
+                } else {
+                  this.criterionsSets[this.indexSet].criterions.push(criterion);
+                  this.indexCritOrAlt = null;
+                }
               },
               error => {
                 console.log(error);
@@ -261,14 +273,20 @@ export class SetsPageComponent implements OnInit {
       );
   }
 
-  addNewAlternativeInSet(model: Alternative, isValid: boolean) {
-    this.httpService.addAlternative(new Alternative(model.id, model.alternativeName))
+  addOrUpdateAlternativeInSet(model: Alternative, isValid: boolean) {
+    this.httpService.addAlternative(new Alternative(this.alternative.id, model.alternativeName))
       .subscribe(
-        (data: Alternative) => {
-          this.alternativesSets[this.indexSet].alternatives.push(data);
-          this.httpService.addAlternativeToAlternativeSet(data.id, this.idSet)
+        (alternative: Alternative) => {
+          this.httpService.addAlternativeToAlternativeSet(alternative.id, this.idSet)
             .subscribe(
               (data) => {
+                if (this.indexCritOrAlt != null) {
+                  this.alternativesSets[this.indexSet].alternative[this.indexCritOrAlt] = alternative;
+                  this.indexCritOrAlt = null;
+                } else {
+                  this.alternativesSets[this.indexSet].alternatives.push(alternative);
+                  this.indexCritOrAlt = null;
+                }
               },
               error => {
                 console.log(error);
@@ -281,9 +299,21 @@ export class SetsPageComponent implements OnInit {
       );
   }
 
-  addSetInfoForInsert(id: string, setId: string) {
-    this.idSet = setId;
-    this.indexSet = id;
+  setInfoForInsert(indexSet: string, idSet: string) {
+    this.idSet = idSet;
+    this.indexSet = indexSet;
+  }
+
+  setInfoForUpdate(idSet: string, indexSet: string, indexCritOrAlt: number, critOrAlt: boolean) {
+    this.idSet = idSet;
+    this.indexSet = indexSet;
+    this.indexCritOrAlt = indexCritOrAlt;
+    if(critOrAlt) {
+      this.criterion = this.criterionsSets[indexSet].criterions[indexCritOrAlt];
+    }else{
+      this.alternative = this.alternativesSets[indexSet].alternatives[indexCritOrAlt];
+    }
+    console.log(this.criterion);
   }
 
   deleteCriterion(criterionSetId: string, criterionId: string, indexCriterionSet: string, indexCriterion: string) {

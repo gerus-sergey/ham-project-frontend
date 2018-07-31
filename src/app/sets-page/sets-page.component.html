@@ -15,7 +15,7 @@
                 </button>
               </h4>
 
-              <div class="panel-group" id="accordion1" role="tablist" aria-multiselectable="true">
+              <div class="panel-group" id="accordion1" role="tablist" aria-multiselectable="true" style="padding-top: 20px">
                 <div class="panel panel-default" *ngFor="let criterionsSet of criterionsSets; let i = index">
                   <div class="panel-heading" role="tab" id="headingOne">
                     <h4 class="panel-title" style="padding-bottom: 15px">
@@ -41,12 +41,11 @@
                               <th>Наименование критерия</th>
                               <th>Описание</th>
                             </tr>
-                            <tr *ngFor="let criterion of criterionsSets[i].criterions; let j = index;">
-                              <td>{{criterion.criterionName}}</td>
+                            <tr *ngFor="let criterion of criterionsSet.criterions; let j = index;">
+                              <td><a data-toggle="modal" data-target="#myModal11" (click)="setInfoForUpdate(criterionsSet.id, i, j, true)">{{criterion.criterionName}}</a></td>
                               <td>{{criterion.description}}</td>
                               <td>
-                                <button type="button" style="float: right"
-                                        class="btn btn-danger btn-sm"
+                                <button type="button" style="float: right" class="btn btn-danger btn-sm"
                                         (click)="deleteCriterion(criterionsSet.id,criterion.id, i, j)"><i class="fas fa-times"></i>
                                 </button>
                               </td>
@@ -54,7 +53,7 @@
                           </table>
                         </div>
                         <button type="button" class="btn btn-default" style="margin-top: 10px" data-toggle="modal"
-                                (click)="addSetInfoForInsert(i, criterionsSet.id)" data-target="#myModal1">
+                                (click)="setInfoForInsert(i, criterionsSet.id)" data-target="#myModal1">
                           Добавить критерий
                         </button>
                       </div>
@@ -85,7 +84,7 @@
                           </table>
                         </div>
                         <button type="button" class="btn btn-default" style="margin-top: 10px" data-toggle="modal"
-                                (click)="addSetInfoForInsert(i, criterionsSet.id)" data-target="#myModal3">Добавить эксперта
+                                (click)="setInfoForInsert(i, criterionsSet.id)" data-target="#myModal3">Добавить эксперта
                         </button>
                       </div>
                     </div>
@@ -150,14 +149,14 @@
                       </div>
 
                       <form class="form-horizontal" novalidate #a="ngForm"
-                            (ngSubmit)="addNewCriterion(a.value, a.valid)">
+                            (ngSubmit)="addOrUpdateCriterionInSet(a.value, a.valid)">
                         <div class="modal-body">
 
                           <div class="form-group form-group-edit">
                             <h4 class="profile-label">Название</h4>
                             <div class="profile-input">
                               <input type="text" class="form-control" name="criterionName"
-                                     [(ngModel)]="newCriterion.criterionName"
+                                     [(ngModel)]="criterion.criterionName"
                                      placeholder="Название"
                                      ngModel
                                      #name="ngModel" minlength="2" maxlength="50" style="width: 400px;" required/>
@@ -169,7 +168,53 @@
                             <div class="profile-input">
                       <textarea required class="form-control" rows="7" maxlength="150"
                                 style="width: 400px; resize: none"
-                                name="description" placeholder="Комментарий" [(ngModel)]="newCriterion.description">
+                                name="description" placeholder="Комментарий" [(ngModel)]="criterion.description">
+                      </textarea>
+                            </div>
+                          </div>
+
+                        </div>
+                        <div class="modal-footer">
+                          <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                          <button type="submit" class="btn btn-primary">Сохранить</button>
+                        </div>
+                      </form>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Модаль -->
+                <div class="modal fade" id="myModal11" tabindex="-1" role="dialog" aria-labelledby="myModalLabel11">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                          aria-hidden="true">&times;</span>
+                        </button>
+                        <h4 class="modal-title" id="myModalLabel11">Редактирование критерия</h4>
+                      </div>
+
+                      <form class="form-horizontal" novalidate #a="ngForm"
+                            (ngSubmit)="addOrUpdateCriterionInSet(a.value, a.valid)">
+                        <div class="modal-body">
+
+                          <div class="form-group form-group-edit">
+                            <h4 class="profile-label">Название</h4>
+                            <div class="profile-input">
+                              <input type="text" class="form-control" name="criterionName"
+                                     [(ngModel)]="criterion.criterionName"
+                                     placeholder="Название"
+                                     ngModel
+                                     #name="ngModel" minlength="2" maxlength="50" style="width: 400px;" required/>
+                            </div>
+                          </div>
+
+                          <div class="form-group form-group-edit">
+                            <h4 class="profile-label">Комментарий</h4>
+                            <div class="profile-input">
+                      <textarea required class="form-control" rows="7" maxlength="150"
+                                style="width: 400px; resize: none"
+                                name="description" placeholder="Комментарий" [(ngModel)]="criterion.description">
                       </textarea>
                             </div>
                           </div>
@@ -235,7 +280,7 @@
                 <button type="button" class="btn btn-default" style="float: right" data-toggle="modal" data-target="#myModal6">Добавить набор
                 </button>
               </h4>
-              <div class="panel-group" id="accordion2" role="tablist" aria-multiselectable="true">
+              <div class="panel-group" id="accordion2" role="tablist" aria-multiselectable="true" style="padding-top: 20px">
                 <div class="panel panel-default"
                      *ngFor="let alternativesSet of alternativesSets; let i = index">
                   <div class="panel-heading" role="tab" id="headingTwo">
@@ -260,8 +305,8 @@
                             <tr>
                               <th>Наименование альтернативы</th>
                             </tr>
-                            <tr *ngFor="let alternative of alternativesSets[i].alternatives; let j = index">
-                              <td>{{alternative.alternativeName}}</td>
+                            <tr *ngFor="let alternative of alternativesSet.alternatives; let j = index">
+                              <td><a data-toggle="modal" data-target="#myModal12" (click)="setInfoForUpdate(alternativesSet.id, i, j, false)">{{alternative.alternativeName}}</a></td>
                               <td>
                                 <button type="button" style="float: right"
                                         class="btn btn-danger btn-sm"
@@ -272,7 +317,7 @@
                           </table>
                         </div>
                         <button type="button" class="btn btn-default" style="margin-top: 10px" data-toggle="modal"
-                                (click)="addSetInfoForInsert(i, alternativesSet.id)" data-target="#myModal2">
+                                (click)="setInfoForInsert(i, alternativesSet.id)" data-target="#myModal2">
                           Добавить альтернативу
                         </button>
                       </div>
@@ -303,7 +348,7 @@
                           </table>
                         </div>
                         <button type="button" class="btn btn-default" style="margin-top: 10px" data-toggle="modal"
-                                (click)="addSetInfoForInsert(i, alternativesSet.id)" data-target="#myModal4">Добавить эксперта
+                                (click)="setInfoForInsert(i, alternativesSet.id)" data-target="#myModal4">Добавить эксперта
                         </button>
                       </div>
                     </div>
@@ -371,13 +416,47 @@
                 </div>
 
                 <form class="form-horizontal" novalidate #b="ngForm"
-                      (ngSubmit)="addNewAlternativeInSet(b.value, b.valid)">
+                      (ngSubmit)="addOrUpdateAlternativeInSet(b.value, b.valid)">
                   <div class="modal-body">
                     <div class="form-group form-group-edit">
                       <h4 class="profile-label">Название</h4>
                       <div class="profile-input">
                         <input type="text" class="form-control" name="alternativeName"
-                               [(ngModel)]="newAlternative.alternativeName"
+                               [(ngModel)]="alternative.alternativeName"
+                               placeholder="Название"
+                               ngModel
+                               #name="ngModel" minlength="2" maxlength="50" style="width: 400px;" required/>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Закрыть</button>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <!-- Модаль -->
+          <div class="modal fade" id="myModal12" tabindex="-1" role="dialog" aria-labelledby="myModalLabel12">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                    aria-hidden="true">&times;</span>
+                  </button>
+                  <h4 class="modal-title" id="myModalLabel12">Редактирование альтернативы</h4>
+                </div>
+
+                <form class="form-horizontal" novalidate #b="ngForm"
+                      (ngSubmit)="addOrUpdateAlternativeInSet(b.value, b.valid)">
+                  <div class="modal-body">
+                    <div class="form-group form-group-edit">
+                      <h4 class="profile-label">Название</h4>
+                      <div class="profile-input">
+                        <input type="text" class="form-control" name="alternativeName"
+                               [(ngModel)]="alternative.alternativeName"
                                placeholder="Название"
                                ngModel
                                #name="ngModel" minlength="2" maxlength="50" style="width: 400px;" required/>
